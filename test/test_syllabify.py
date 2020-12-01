@@ -123,10 +123,15 @@ class TestSyllabify(TestCase):
         syllables = syllabify(word)
         self.assertEqual(['spec', 'tant'], syllables)
 
-    def test_st(self):
+    def test_st_initial(self):
         word = 'stabat'
         syllables = syllabify(word)
         self.assertEqual(['sta', 'bat'], syllables)
+
+    def test_st_medial(self):
+        word = 'instare'
+        syllables = syllabify(word)
+        self.assertEqual(['ins', 'ta', 're'], syllables)
 
     def test_sc(self):
         word = 'scelere'
@@ -178,10 +183,15 @@ class TestSyllabify(TestCase):
         syllables = syllabify(word)
         self.assertEqual(['rhe', 'num'], syllables)
 
-    def test_pt(self):
+    def test_pt_initial(self):
         word = 'ptianii'  # Name of a people (loanword)
         syllables = syllabify(word)
         self.assertEqual(['pti', 'a', 'ni', 'i'], syllables)
+
+    def test_pt_medial(self):
+        word = 'captus'
+        syllables = syllabify(word)
+        self.assertEqual(['cap', 'tus'], syllables)
 
     # Diphthongs
     def test_ae(self):
@@ -213,9 +223,6 @@ class TestSyllabify(TestCase):
         syllables = syllabify(word)
         self.assertEqual(['seu'], syllables)
 
-    # TODO what to do about cases like 'coe-git' where oe is not a diphthong
-    #  and we know that because of the annotation (macron) but we wouldn't be
-    #  able to spot that if the data weren't annotated?
     @skip('Can\'t distinguish between oe with long e (coegit) '
           'and oe as diphthong')
     def test_oe_not_diphth(self):
@@ -252,29 +259,24 @@ class TestSyllabify(TestCase):
         self.assertEqual(['i-n'], syllables)
 
     def test_cvm(self):
-        word = 'tu-'
+        word = 'se-'
         syllables = syllabify(word)
-        self.assertEqual(['tu-'], syllables)
+        self.assertEqual(['se-'], syllables)
 
     def test_cvmc(self):
-        word = 'su-m'
+        word = 'ha-c'
         syllables = syllabify(word)
-        self.assertEqual(['su-m'], syllables)
+        self.assertEqual(['ha-c'], syllables)
 
-    def test_vmcc(self):
-        word = 'e-st'
+    def test_ccvmcc(self):
+        word = 'ple-bs'
         syllables = syllabify(word)
-        self.assertEqual(['e-st'], syllables)
+        self.assertEqual(['ple-bs'], syllables)
 
-    def test_cvmcvm(self):
-        word = 'ti-bi-'
+    def test_cvmcvmcv(self):
+        word = 're-gna-re'
         syllables = syllabify(word)
-        self.assertEqual(['ti-', 'bi-'], syllables)
-
-    def test_cvmcvmc(self):
-        word = 'bo-nu-m'
-        syllables = syllabify(word)
-        self.assertEqual(['bo-', 'nu-m'], syllables)
+        self.assertEqual(['re-g', 'na-', 're'], syllables)
 
     def test_cvmvc(self):
         word = 'de-us'

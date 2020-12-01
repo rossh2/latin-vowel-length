@@ -1,15 +1,12 @@
 from typing import List
 
 CONSONANTS = 'bcdfghjlmnpqrstvxz'
-STOPS_FRICATIVES = 'bcdfgpstv'  # Excluding h (not an oral fricative)
-NASALS = 'mn'
-ONSET_CLUSTERS = ['ch', 'ph', 'th', 'rh'] \
-                 + ['chr', 'phr', 'thr', 'chl', 'phl', 'thl'] \
-                 + [c + 'r' for c in STOPS_FRICATIVES] \
-                 + [c + 'l' for c in STOPS_FRICATIVES] \
-                 + ['s' + c for c in STOPS_FRICATIVES] \
-                 + ['s' + n for n in NASALS] \
-                 + ['s' + c + 'r' for c in STOPS_FRICATIVES]
+
+# Muta cum liquida
+STOPS_FRICATIVES = 'bcdfgpst'
+GLIDES_LIQUIDS = 'lr'  # v is a glide but does not do muta cum liquida
+ONSET_CLUSTERS = [muta + liquida
+                  for muta in STOPS_FRICATIVES for liquida in GLIDES_LIQUIDS]
 
 VOWELS = 'aeiouy'
 DIPHTHONGS = ['ae', 'au', 'oe']  # + ['ei', 'eu']
@@ -27,6 +24,9 @@ def syllabify(word: str) -> List[str]:
     if word in diphthong_exceptions:
         return diphthong_exceptions[word]
 
+    h_indices = [i for i, s in enumerate(word) if s == 'h']
+    word = word.replace('h', '')
+
     syllables = []
     curr_syl = ''
     coda_candidate = ''
@@ -35,9 +35,8 @@ def syllabify(word: str) -> List[str]:
         segment = next(word_iter)
         while True:
             # Onset
-            # (onset might be provided by previous iteration -
-            # check if curr_syl already contains something)
             if not curr_syl:
+                # First onset of word
                 while segment in CONSONANTS:
                     curr_syl += segment
                     segment = next(word_iter)
@@ -124,4 +123,17 @@ def syllabify(word: str) -> List[str]:
         else:
             fixed_syllables.append(syllable)
 
-    return fixed_syllables
+    # Insert h's that were removed/ignored (respect the orthography)
+    i = 0
+    final_syllables = []
+    for syllable in fixed_syllables:
+        new_syllable = ''
+        for segment in syllable:
+            if i in h_indices:
+                new_syllable += 'h'
+                i += 1
+            new_syllable += segment
+            i += 1
+        final_syllables.append(new_syllable)
+
+    return final_syllables
