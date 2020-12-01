@@ -5,9 +5,9 @@ RAW_DATA_PATH = 'data/Ryan_Latin_master.txt'
 LETTERS_MACRON = ascii_letters + '-'
 
 
-def read_raw_data() -> List[str]:
+def read_corpus_words(path: str) -> List[str]:
     words: List[str] = []
-    with open(RAW_DATA_PATH, mode='r', encoding='utf-8') as raw_data:
+    with open(path, mode='r', encoding='utf-8') as raw_data:
         for line in raw_data:
             if not line.isspace() and not line.startswith('#'):
                 line_words = line.split()
@@ -23,6 +23,6 @@ def clean_punctuation(word: str) -> str:
 
 
 if __name__ == '__main__':
-    words = read_raw_data()
+    words = read_corpus_words(RAW_DATA_PATH)
     for word in words[:100]:
         print(word)
