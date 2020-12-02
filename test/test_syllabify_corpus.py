@@ -1,5 +1,5 @@
 from unittest import TestCase
-from parse_data import read_corpus_words
+from parse import read_corpus_words
 from syllabify import syllabify
 
 

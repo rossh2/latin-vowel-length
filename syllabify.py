@@ -4,9 +4,9 @@ CONSONANTS = 'bcdfghjlmnpqrstvxz'
 
 # Muta cum liquida
 STOPS_FRICATIVES = 'bcdfgpst'
-GLIDES_LIQUIDS = 'lr'  # v is a glide but does not do muta cum liquida
+APPROX = 'lr'  # v is an approximant ([w]) but does not do muta cum liquida
 ONSET_CLUSTERS = [muta + liquida
-                  for muta in STOPS_FRICATIVES for liquida in GLIDES_LIQUIDS]
+                  for muta in STOPS_FRICATIVES for liquida in APPROX]
 
 VOWELS = 'aeiouy'
 DIPHTHONGS = ['ae', 'au', 'oe']  # + ['ei', 'eu']
@@ -18,6 +18,15 @@ diphthong_exceptions = {
     'cui': ['cui'],
     'hui': ['hui']
 }
+
+# Use C* for two or more consonants. Use CL for muta cum liquida (L as liquid)
+# VV for diphthongs
+# These are the types returned by identify_syllable_type
+SYLLABLE_TYPES = ['V', 'VV',
+                  'CV', 'CLV', 'C*V', 'CVV', 'CLVV', 'C*VV',
+                  'VC', 'VC*', 'VVC', 'VVC*',
+                  'CVC', 'CLVC', 'C*VC', 'CVVC', 'CLVVC', 'C*VVC',
+                  'CVC*', 'CLVC*', 'C*VC*', 'CVVC*', 'CLVVC*', 'C*VVC*']
 
 
 def syllabify(word: str) -> List[str]:
@@ -137,3 +146,117 @@ def syllabify(word: str) -> List[str]:
         final_syllables.append(new_syllable)
 
     return final_syllables
+
+
+def identify_syllable_type(syllable: str) -> str:
+    syllable = syllable.replace('h', '')
+    if syllable[0] in VOWELS:
+        return identify_syllable_type_V(syllable)
+    else:
+        # Syllable starts with consonant
+        if len(syllable) == 1:
+            raise ValueError('Invalid syllable structure "C"')
+        else:
+            # Figure out what the onset is
+            if syllable[:2] == 'qu':
+                return identify_syllable_type_CL(syllable)
+            elif syllable[1] in VOWELS:
+                # CV...
+                return identify_syllable_type_CV(syllable)
+            elif syllable[1] in APPROX:
+                # CL...
+                return identify_syllable_type_CL(syllable)
+            else:
+                # C*...
+                return identify_syllable_type_Cstar(syllable)
+
+
+def identify_syllable_type_V(syllable):
+    if len(syllable) == 1:
+        return 'V'
+    elif syllable[1] in VOWELS:
+        # VV...
+        if len(syllable) == 2:
+            return 'VV'
+        elif len(syllable) == 3:
+            return 'VVC'
+        else:
+            return 'VVC*'
+    else:
+        # VC...
+        if len(syllable) == 2:
+            return 'VC'
+        else:
+            return 'VC*'
+
+
+def identify_syllable_type_CV(syllable):
+    if len(syllable) > 2 and syllable[2] in VOWELS:
+        # CVV...
+        coda = syllable[3:]
+        if coda and coda[0] in VOWELS:
+            raise ValueError('Invalid nucleus "VVV"')
+        if len(coda) == 0:
+            return 'CVV'
+        elif len(coda) == 1:
+            return 'CVVC'
+        else:
+            return 'CVVC*'
+    else:
+        # CV(C)...
+        coda = syllable[3:] if syllable[:2] == 'qu' else syllable[2:]
+        if len(coda) == 0:
+            return 'CV'
+        elif len(coda) == 1:
+            return 'CVC'
+        else:
+            return 'CVC*'
+
+
+def identify_syllable_type_CL(syllable):
+    if len(syllable) == 2:
+        raise ValueError('Invalid syllable "CL"')
+    if len(syllable) > 3 and syllable[3] in VOWELS:
+        # CLVV...
+        coda = syllable[4:]
+        if coda and coda[0] in VOWELS:
+            raise ValueError('Invalid nucleus "VVV"')
+        if len(coda) == 0:
+            return 'CLVV'
+        elif len(coda) == 1:
+            return 'CLVVC'
+        else:
+            return 'CLVVC*'
+    else:
+        # CLV(C)...
+        coda = syllable[3:]
+        if len(coda) == 0:
+            return 'CLV'
+        elif len(coda) == 1:
+            return 'CLVC'
+        else:
+            return 'CLVC*'
+
+
+def identify_syllable_type_Cstar(syllable):
+    vowel_indices = [i for i, s in enumerate(syllable)
+                     if s in VOWELS]
+    coda = syllable[(vowel_indices[-1] + 1):]
+    if len(vowel_indices) == 1:
+        # C*V(C)...
+        if len(coda) == 0:
+            return 'C*V'
+        if len(coda) == 1:
+            return 'C*VC'
+        else:
+            return 'C*VC*'
+    elif len(vowel_indices) == 2 and vowel_indices[0] + 1 == vowel_indices[1]:
+        # C*VV(C)...
+        if len(coda) == 0:
+            return 'C*VV'
+        elif len(coda) == 1:
+            return 'C*VVC'
+        else:
+            return 'C*VVC*'
+    else:
+        raise ValueError('Invalid nucleus "VVV" or non-adjacent Vs')

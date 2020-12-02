@@ -1,6 +1,6 @@
 from unittest import TestCase, skip
 
-from syllabify import syllabify
+from syllabify import syllabify, identify_syllable_type
 
 
 class TestSyllabify(TestCase):
@@ -287,3 +287,220 @@ class TestSyllabify(TestCase):
         word = 'coe-git'
         syllables = syllabify(word)
         self.assertEqual(['co', 'e-', 'git'], syllables)
+
+
+class TestIdentifySyllableType(TestCase):
+    def test_v(self):
+        syllable = 'a'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('V', syl_type)
+
+    def test_vv(self):
+        syllable = 'ei'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('VV', syl_type)
+
+    def test_cv(self):
+        syllable = 'de'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CV', syl_type)
+
+    def test_chv(self):
+        syllable = 'rhe'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CV', syl_type)
+
+    def test_quv(self):
+        syllable = 'qui'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLV', syl_type)
+
+    def test_clv(self):
+        syllable = 'pre'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLV', syl_type)
+
+    def test_chlv(self):
+        syllable = 'chra'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLV', syl_type)
+
+    def test_c2v(self):
+        syllable = 'sta'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('C*V', syl_type)
+
+    def test_c3v(self):
+        syllable = 'stra'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('C*V', syl_type)
+
+    def test_cvv(self):
+        syllable = 'cui'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVV', syl_type)
+
+    def test_chvv(self):
+        syllable = 'chae'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVV', syl_type)
+
+    def test_quvv(self):
+        syllable = 'quae'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVV', syl_type)
+
+    def test_clvv(self):
+        syllable = 'plae'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVV', syl_type)
+
+    def test_chlvv(self):
+        syllable = 'chrae'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVV', syl_type)
+
+    def test_cstarvv(self):
+        syllable = 'stae'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('C*VV', syl_type)
+
+    def test_vc(self):
+        syllable = 'at'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('VC', syl_type)
+
+    def test_vcstar(self):
+        syllable = 'ast'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('VC*', syl_type)
+
+    def test_vvc(self):
+        syllable = 'aes'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('VVC', syl_type)
+
+    def test_vvcstar(self):
+        syllable = 'aest'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('VVC*', syl_type)
+
+    def test_cvc(self):
+        syllable = 'non'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVC', syl_type)
+
+    def test_chvc(self):
+        syllable = 'phis'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVC', syl_type)
+
+    def test_quvc(self):
+        syllable = 'quis'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVC', syl_type)
+
+    def test_clvc(self):
+        syllable = 'plis'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVC', syl_type)
+
+    def test_chlvc(self):
+        syllable = 'phris'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVC', syl_type)
+
+    def test_cstarvc(self):
+        syllable = 'stis'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('C*VC', syl_type)
+
+    def test_cvvc(self):
+        syllable = 'taes'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVVC', syl_type)
+
+    def test_chvvc(self):
+        syllable = 'chaes'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVVC', syl_type)
+
+    def test_quvvc(self):
+        syllable = 'quaes'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVVC', syl_type)
+
+    def test_clvvc(self):
+        syllable = 'plaes'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVVC', syl_type)
+
+    def test_chlvvc(self):
+        syllable = 'phraes'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVVC', syl_type)
+
+    def test_cstarvvc(self):
+        syllable = 'staes'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('C*VVC', syl_type)
+
+    def test_cvcstar(self):
+        syllable = 'cast'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVC*', syl_type)
+
+    def test_chvcstar(self):
+        syllable = 'chast'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVC*', syl_type)
+
+    def test_quvcstar(self):
+        syllable = 'quast'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVC*', syl_type)
+
+    def test_clvcstar(self):
+        syllable = 'clast'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVC*', syl_type)
+
+    def test_chlvcstar(self):
+        syllable = 'chlast'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVC*', syl_type)
+
+    def test_cstarvcstar(self):
+        syllable = 'scest'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('C*VC*', syl_type)
+
+    def test_cvvcstar(self):
+        syllable = 'caest'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVVC*', syl_type)
+
+    def test_chvvcstar(self):
+        syllable = 'phaest'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVVC*', syl_type)
+
+    def test_quvvcstar(self):
+        syllable = 'quaest'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVVC*', syl_type)
+
+    def test_clvvcstar(self):
+        syllable = 'plaest'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVVC*', syl_type)
+
+    def test_chlvvcstar(self):
+        syllable = 'phlaest'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CLVVC*', syl_type)
+
+    def test_cstarvvcstar(self):
+        syllable = 'scaest'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('C*VVC*', syl_type)
