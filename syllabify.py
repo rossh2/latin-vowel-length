@@ -155,7 +155,8 @@ def identify_syllable_type(syllable: str) -> str:
     else:
         # Syllable starts with consonant
         if len(syllable) == 1:
-            raise ValueError('Invalid syllable structure "C"')
+            raise ValueError(
+                f'Invalid syllable structure "C" for syllable {syllable}')
         else:
             # Figure out what the onset is
             if syllable[:2] == 'qu':
@@ -171,7 +172,7 @@ def identify_syllable_type(syllable: str) -> str:
                 return identify_syllable_type_Cstar(syllable)
 
 
-def identify_syllable_type_V(syllable):
+def identify_syllable_type_V(syllable: str) -> str:
     if len(syllable) == 1:
         return 'V'
     elif syllable[1] in VOWELS:
@@ -190,12 +191,12 @@ def identify_syllable_type_V(syllable):
             return 'VC*'
 
 
-def identify_syllable_type_CV(syllable):
+def identify_syllable_type_CV(syllable: str) -> str:
     if len(syllable) > 2 and syllable[2] in VOWELS:
         # CVV...
         coda = syllable[3:]
         if coda and coda[0] in VOWELS:
-            raise ValueError('Invalid nucleus "VVV"')
+            raise ValueError(f'Invalid nucleus "VVV" for syllable {syllable}')
         if len(coda) == 0:
             return 'CVV'
         elif len(coda) == 1:
@@ -213,14 +214,15 @@ def identify_syllable_type_CV(syllable):
             return 'CVC*'
 
 
-def identify_syllable_type_CL(syllable):
+def identify_syllable_type_CL(syllable: str) -> str:
     if len(syllable) == 2:
-        raise ValueError('Invalid syllable "CL"')
+        raise ValueError(
+            f'Invalid syllable structure "CL" for syllable {syllable}')
     if len(syllable) > 3 and syllable[3] in VOWELS:
         # CLVV...
         coda = syllable[4:]
         if coda and coda[0] in VOWELS:
-            raise ValueError('Invalid nucleus "VVV"')
+            raise ValueError(f'Invalid nucleus "VVV" for syllable {syllable}')
         if len(coda) == 0:
             return 'CLVV'
         elif len(coda) == 1:
@@ -238,9 +240,12 @@ def identify_syllable_type_CL(syllable):
             return 'CLVC*'
 
 
-def identify_syllable_type_Cstar(syllable):
+def identify_syllable_type_Cstar(syllable: str) -> str:
     vowel_indices = [i for i, s in enumerate(syllable)
                      if s in VOWELS]
+    if len(vowel_indices) == 0:
+        raise ValueError(
+            f'Invalid syllable structure: C* for syllable {syllable}')
     coda = syllable[(vowel_indices[-1] + 1):]
     if len(vowel_indices) == 1:
         # C*V(C)...
@@ -259,4 +264,12 @@ def identify_syllable_type_Cstar(syllable):
         else:
             return 'C*VVC*'
     else:
-        raise ValueError('Invalid nucleus "VVV" or non-adjacent Vs')
+        raise ValueError(
+            f'Invalid nucleus "VVV" or non-adjacent Vs for syllable {syllable}')
+
+
+def is_diphthong(syllable: str) -> bool:
+    for diphthong in DIPHTHONGS:
+        if diphthong in syllable:
+            return True
+    return False
