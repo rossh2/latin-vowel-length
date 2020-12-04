@@ -1,4 +1,5 @@
 from typing import List
+import re
 
 CONSONANTS = 'bcdfghjlmnpqrstvxz'
 
@@ -18,6 +19,8 @@ diphthong_exceptions = {
     'cui': ['cui'],
     'hui': ['hui']
 }
+
+VOWEL_REGEX = re.compile(f'[{VOWELS}]+')
 
 # Use C* for two or more consonants. Use CL for muta cum liquida (L as liquid)
 # VV for diphthongs
@@ -273,3 +276,10 @@ def is_diphthong(syllable: str) -> bool:
         if diphthong in syllable:
             return True
     return False
+
+
+def extract_vowels(syllable: str) -> str:
+    match = VOWEL_REGEX.search(syllable)
+    if not match:
+        raise ValueError(f'Invalid syllable {syllable} contains no vowels')
+    return match.group(0)

@@ -41,6 +41,8 @@ Feature ranking:
 
 # Random Forest
 
+## First features
+
 Features: syllable, syllable type, ((ante)pen)ultimate
 max_depth = 50, n_estimators = 100
 
@@ -118,6 +120,48 @@ Feature ranking:
 23. feature res (0.009175504347592402)
 24. feature na (0.008896811277101194)
 25. feature TYPE=V (0.00866626004368503)
+
+## More features
+
+Using features: ['vowel', 'postinitial', 'diphthong', 'antepenultimate', 'syllable_type', 'vocab']
+Extracted 1405 features for 1363 syllables in vocabulary
+Hyperparameters: min_samples_split=5, n_estimators=50
+              precision    recall  f1-score   support
+
+       short       0.91      0.94      0.92     32295
+        long       0.86      0.79      0.82     14766
+
+    accuracy                           0.89     47061
+   macro avg       0.88      0.86      0.87     47061
+weighted avg       0.89      0.89      0.89     47061
+
+Feature ranking:
+1. feature ULT (1e+02)
+2. feature INIT (79.4)
+3. feature PENULT (52.9)
+4. feature VOWEL=o (33.1)
+5. feature ANTEPENULT (28.1)
+6. feature POSTINIT (26.4)
+7. feature TYPE=CVC (23.8)
+8. feature VOWEL=i (23.2)
+9. feature TYPE=CV (22.6)
+10. feature VOWEL=ae (22.4)
+11. feature TYPE=VC (22.2)
+12. feature VOWEL=a (17.7)
+13. feature TYPE=CVV (17.6)
+14. feature TYPE=CLV (15.1)
+15. feature VOWEL=u (13.8)
+16. feature VOWEL=e (13.5)
+17. feature o (13.0)
+18. feature TYPE=V (10.5)
+19. feature DIPHTHONG (10.3)
+20. feature non (9.92)
+21. feature tes (9.9)
+22. feature VOWEL=au (8.71)
+23. feature nes (8.51)
+24. feature de (8.21)
+25. feature res (7.72)
+
 
 # Logistic Regression
 

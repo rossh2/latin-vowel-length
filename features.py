@@ -1,15 +1,19 @@
 from collections import defaultdict
 from typing import List, Dict, Iterable
 
-from syllabify import identify_syllable_type, is_diphthong
+from syllabify import identify_syllable_type, is_diphthong, extract_vowels
 
 UNK = 'UNK'
 
 VOCAB_FEATURE = 'vocab'
 SYLLABLE_TYPE_FEATURE = 'syllable_type'
+VOWEL_FEATURE = 'vowel'
+DIPHTHONG_FEATURE = 'diphthong'
+POSTINIT_FEATURE = 'postinitial'
 ANTEPEN_FEATURE = 'antepenultimate'
-DEFAULT_FEATURES = frozenset(
-    {VOCAB_FEATURE, SYLLABLE_TYPE_FEATURE, ANTEPEN_FEATURE})
+ALL_FEATURES = frozenset(
+    {VOCAB_FEATURE, SYLLABLE_TYPE_FEATURE, VOWEL_FEATURE, DIPHTHONG_FEATURE,
+     POSTINIT_FEATURE, ANTEPEN_FEATURE})
 
 
 def build_syllable_vocabulary(words: List[List[str]]) -> Dict[str, int]:
@@ -36,7 +40,7 @@ def cap_vocabulary(vocabulary: Dict[str, int], max_size: int) -> List[str]:
 
 
 def extract_features(syllables: List[str], vocabulary: Iterable[str],
-                     use_features=DEFAULT_FEATURES) \
+                     use_features=ALL_FEATURES) \
         -> List[Dict[str, float]]:
     features: List[Dict[str, float]] = []
     syl_length = len(syllables)
@@ -49,6 +53,7 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
         feature_dict = defaultdict(float)
 
         cleaned_syllable = clean_syllable(syllables[i])
+        vowels = extract_vowels(cleaned_syllable)
 
         if VOCAB_FEATURE in use_features:
             # Add basic feature for each syllable in vocabulary
@@ -61,6 +66,19 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
             # Add syllable type
             syl_type = identify_syllable_type(cleaned_syllable)
             feature_dict['TYPE=' + syl_type] = 1.0
+
+        if VOWEL_FEATURE in use_features:
+            feature_dict['VOWEL=' + vowels] = 1.0
+
+        if DIPHTHONG_FEATURE in use_features:
+            if len(vowels) > 1:
+                feature_dict['DIPHTHONG'] = 1.0
+
+        if POSTINIT_FEATURE in use_features:
+            if i == 0:
+                feature_dict['INIT'] = 1.0
+            elif i == 1:
+                feature_dict['POSTINIT'] = 1.0
 
         if ANTEPEN_FEATURE in use_features:
             # Ultimate, penultimate and antepenultimate

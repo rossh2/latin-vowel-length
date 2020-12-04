@@ -1,6 +1,6 @@
 from unittest import TestCase, skip
 
-from syllabify import syllabify, identify_syllable_type
+from syllabify import syllabify, identify_syllable_type, extract_vowels
 
 
 class TestSyllabify(TestCase):
@@ -504,3 +504,30 @@ class TestIdentifySyllableType(TestCase):
         syllable = 'scaest'
         syl_type = identify_syllable_type(syllable)
         self.assertEqual('C*VVC*', syl_type)
+
+
+class TestExtractVowels(TestCase):
+    def test_v(self):
+        syllable = 'a'
+        vowels = extract_vowels(syllable)
+        self.assertEqual('a', vowels)
+
+    def test_y(self):
+        syllable = 'y'
+        vowels = extract_vowels(syllable)
+        self.assertEqual('y', vowels)
+
+    def test_vv(self):
+        syllable = 'ae'
+        vowels = extract_vowels(syllable)
+        self.assertEqual('ae', vowels)
+
+    def test_cvc(self):
+        syllable = 'sum'
+        vowels = extract_vowels(syllable)
+        self.assertEqual('u', vowels)
+
+    def test_cvvc(self):
+        syllable = 'haec'
+        vowels = extract_vowels(syllable)
+        self.assertEqual('ae', vowels)

@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
 from features import build_syllable_vocabulary, cap_vocabulary, \
-    extract_features, is_long_syllable, DEFAULT_FEATURES
+    extract_features, is_long_syllable, ALL_FEATURES
 from preprocess import read_syllabified_words, PREPROCESSED_DATA_PATH
 
 
@@ -78,6 +78,7 @@ def evaluate(test_data: np.ndarray, test_labels: np.ndarray,
         # forest_feature_importances(classifier, features)
         importances = classifier.feature_importances_
     else:
+        print('Unsupported classifier for feature ranking')
         return
 
     importances = 100.0 * (importances / importances.max())
@@ -87,36 +88,15 @@ def evaluate(test_data: np.ndarray, test_labels: np.ndarray,
     print("Feature ranking:")
     for f in range(min(25, len(features))):
         print(f'{f + 1}. feature {features[indices[f]]} '
-              f'({importances[indices[f]]:.3})')
-
-
-def log_reg_importances(classifier, features):
-    importances = abs(classifier.coef_[0])
-    # importances = 100.0 * (importances / importances.max())
-    indices = np.argsort(importances)[::-1]
-
-    # Print the feature ranking
-    print("Feature ranking:")
-    for f in range(min(25, len(features))):
-        print(f'{f + 1}. feature {features[indices[f]]} '
-              f'({importances[indices[f]]})')
-
-
-def forest_feature_importances(classifier, features):
-    importances = classifier.feature_importances_
-    indices = np.argsort(importances)[::-1]
-    # Print the feature ranking
-    print("Feature ranking:")
-    for f in range(min(25, len(features))):
-        print(f'{f + 1}. feature {features[indices[f]]} '
-              f'({importances[indices[f]]})')
+              f'({importances[indices[f]]:.3f})')
 
 
 if __name__ == '__main__':
     syllabified_words = read_syllabified_words(PREPROCESSED_DATA_PATH)
     vocabulary = build_vocabulary(syllabified_words)
-    syl_features, label_list, features = assemble_data(syllabified_words, vocabulary,
-                                                       DEFAULT_FEATURES)
+    syl_features, label_list, features = assemble_data(syllabified_words,
+                                                       vocabulary,
+                                                       ALL_FEATURES)
 
     print(f'Hyperparameters: min_samples_split=5, n_estimators=50')
     classifier = RandomForestClassifier(min_samples_split=5, n_estimators=50)
