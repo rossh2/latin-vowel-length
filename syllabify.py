@@ -20,7 +20,7 @@ diphthong_exceptions = {
     'hui': ['hui']
 }
 
-VOWEL_REGEX = re.compile(f'[{VOWELS}]+')
+VOWEL_REGEX = re.compile(f'(qu)*([{VOWELS}]+)')
 
 # Use C* for two or more consonants. Use CL for muta cum liquida (L as liquid)
 # VV for diphthongs
@@ -282,4 +282,4 @@ def extract_vowels(syllable: str) -> str:
     match = VOWEL_REGEX.search(syllable)
     if not match:
         raise ValueError(f'Invalid syllable {syllable} contains no vowels')
-    return match.group(0)
+    return match.group(2)

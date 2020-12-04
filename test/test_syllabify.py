@@ -531,3 +531,13 @@ class TestExtractVowels(TestCase):
         syllable = 'haec'
         vowels = extract_vowels(syllable)
         self.assertEqual('ae', vowels)
+
+    def test_quv(self):
+        syllable = 'que'
+        vowels = extract_vowels(syllable)
+        self.assertEqual('e', vowels)
+
+    def test_quvv(self):
+        syllable = 'quae'
+        vowels = extract_vowels(syllable)
+        self.assertEqual('ae', vowels)

@@ -123,44 +123,44 @@ Feature ranking:
 
 ## More features
 
-Using features: ['vowel', 'postinitial', 'diphthong', 'antepenultimate', 'syllable_type', 'vocab']
-Extracted 1405 features for 1363 syllables in vocabulary
+Using features: ['vowel', 'antepenultimate', 'postinitial', 'syllable_type', 'diphthong', 'vocab']
+Extracted 1400 features for 1363 syllables in vocabulary
 Hyperparameters: min_samples_split=5, n_estimators=50
               precision    recall  f1-score   support
 
-       short       0.91      0.94      0.92     32295
-        long       0.86      0.79      0.82     14766
+       short       0.91      0.94      0.92     32357
+        long       0.86      0.79      0.82     14704
 
     accuracy                           0.89     47061
    macro avg       0.88      0.86      0.87     47061
 weighted avg       0.89      0.89      0.89     47061
 
 Feature ranking:
-1. feature ULT (1e+02)
-2. feature INIT (79.4)
-3. feature PENULT (52.9)
-4. feature VOWEL=o (33.1)
-5. feature ANTEPENULT (28.1)
-6. feature POSTINIT (26.4)
-7. feature TYPE=CVC (23.8)
-8. feature VOWEL=i (23.2)
-9. feature TYPE=CV (22.6)
-10. feature VOWEL=ae (22.4)
-11. feature TYPE=VC (22.2)
-12. feature VOWEL=a (17.7)
-13. feature TYPE=CVV (17.6)
-14. feature TYPE=CLV (15.1)
-15. feature VOWEL=u (13.8)
-16. feature VOWEL=e (13.5)
-17. feature o (13.0)
-18. feature TYPE=V (10.5)
-19. feature DIPHTHONG (10.3)
-20. feature non (9.92)
-21. feature tes (9.9)
-22. feature VOWEL=au (8.71)
-23. feature nes (8.51)
-24. feature de (8.21)
-25. feature res (7.72)
+1. feature ULT (100.000)
+2. feature INIT (76.681)
+3. feature PENULT (57.325)
+4. feature DIPHTHONG (29.274)
+5. feature ANTEPENULT (28.857)
+6. feature VOWEL=i (27.946)
+7. feature VOWEL=o (25.660)
+8. feature POSTINIT (25.446)
+9. feature TYPE=CV (25.216)
+10. feature TYPE=CVC (24.113)
+11. feature TYPE=VC (23.019)
+12. feature VOWEL=ae (22.507)
+13. feature VOWEL=e (17.846)
+14. feature VOWEL=a (17.004)
+15. feature VOWEL=u (14.695)
+16. feature TYPE=CLV (14.087)
+17. feature o (13.867)
+18. feature TYPE=CVV (11.492)
+19. feature non (10.464)
+20. feature TYPE=V (10.140)
+21. feature tes (9.832)
+22. feature de (9.031)
+23. feature nes (8.531)
+24. feature res (8.226)
+25. feature VOWEL=au (7.284)
 
 
 # Logistic Regression
