@@ -1,0 +1,106 @@
+Reading data from path: ./data/Latin_words_preprocessed_unique.txt
+Total number of words (train+test): 23404
+Using features: ['((ante)pen)ultimate', '((ante)pen)ultimate + que', '(post)initial', 'adjacent coda type', 'adjacent syllable type', 'coda', 'coda type', 'diphthong', 'even/odd index', 'rhyme', 'syllable type', 'vowel', 'whole syllable (vocab)']
+Full vocabulary size: 1362
+Extracted 1662 features for 1362 syllables in vocabulary
+Classifier type: XGBClassifier
+Hyperparameters: n_estimators=75, max_depth=200
+K-fold cross-validation with 5 folds, evaluate on 1 of them
+Fold # 1
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.92      0.95      0.94     41707
+        long       0.89      0.83      0.86     19985
+
+    accuracy                           0.91     61692
+   macro avg       0.91      0.89      0.90     61692
+weighted avg       0.91      0.91      0.91     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.90      0.92      0.91     10490
+        long       0.83      0.78      0.80      4933
+
+    accuracy                           0.88     15423
+   macro avg       0.86      0.85      0.86     15423
+weighted avg       0.88      0.88      0.88     15423
+
+Feature importances for most recent train/test split
+Feature ranking:
+1. feature DIPHTHONG (100.000)
+2. feature CODA=ns (70.727)
+3. feature RHYME=ug (57.121)
+4. feature que (44.183)
+5. feature NO_CODA (28.537)
+6. feature POST_TYPE=V (26.311)
+7. feature scrip (25.884)
+8. feature POST_TYPE=VC (24.345)
+9. feature CODA=s (23.924)
+10. feature fir (22.401)
+11. feature lap (18.268)
+12. feature temp (16.152)
+13. feature dac (15.792)
+14. feature CODA=nt (15.186)
+15. feature thre (15.157)
+16. feature RHYME=ys (14.582)
+17. feature RHYME=eg (13.278)
+18. feature CODA=m (11.661)
+19. feature ULT+QUE (11.598)
+20. feature quid (11.315)
+21. feature tec (10.536)
+22. feature sanc (10.284)
+23. feature RHYME=unc (9.776)
+24. feature nup (9.571)
+25. feature truc (9.490)
+26. feature crip (9.390)
+27. feature trix (9.385)
+28. feature RHYME=ax (9.217)
+29. feature frus (8.780)
+30. feature CODA=nc (8.750)
+31. feature cres (8.730)
+32. feature nun (8.602)
+33. feature VOWEL=ia (8.290)
+34. feature RHYME=on (7.865)
+35. feature prin (7.746)
+36. feature VOWEL=u (7.266)
+37. feature CODA=nx (7.187)
+38. feature CODA=mp (7.126)
+39. feature nul (7.050)
+40. feature frac (6.849)
+41. feature cinc (6.679)
+42. feature pris (6.561)
+43. feature ULT (6.484)
+44. feature fli (6.441)
+45. feature CODA=t (6.356)
+46. feature VOWEL=ae (6.056)
+47. feature vinc (5.766)
+48. feature quin (4.894)
+49. feature tran (4.889)
+50. feature rec (4.609)
+51. feature spu (4.528)
+52. feature RHYME=ie (4.527)
+53. feature TYPE=CLVV (4.423)
+54. feature VOWEL=ie (4.249)
+55. feature RHYME=a (4.223)
+56. feature VOWEL=au (3.950)
+57. feature lec (3.934)
+58. feature phry (3.906)
+59. feature gla (3.789)
+60. feature bus (3.753)
+61. feature cog (3.482)
+62. feature sig (3.453)
+63. feature in (3.362)
+64. feature thu (3.170)
+65. feature mag (3.165)
+66. feature ny (3.161)
+67. feature CODA=r (2.955)
+68. feature hos (2.930)
+69. feature dro (2.910)
+70. feature flic (2.879)
+71. feature plo (2.808)
+72. feature INIT (2.493)
+73. feature VOWEL=i (2.473)
+74. feature nar (2.468)
+75. feature des (2.458)

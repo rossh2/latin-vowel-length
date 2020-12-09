@@ -4,11 +4,10 @@ from datetime import datetime
 from typing import List, Tuple, Set, Dict
 
 import numpy as np
+from seqlearn.evaluation import SequenceKFold
+from seqlearn.perceptron import StructuredPerceptron
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression, Perceptron
 from sklearn.metrics import classification_report
-from sklearn.model_selection import KFold
-from sklearn.tree import DecisionTreeClassifier
 
 from features import build_syllable_vocabulary, cap_vocabulary, \
     extract_features, is_long_syllable, VOCAB_FEATURE, \
@@ -53,7 +52,8 @@ def assemble_data(syllabified_words: List[List[str]], vocabulary: List[str],
 
 
 def numpyify_data(featurized_syllables: List[Dict[str, float]],
-                  label_list: List[bool], features: List[str]):
+                  label_list: List[bool], features: List[str]) \
+        -> Tuple[np.ndarray, np.ndarray]:
     feature_count = len(features)
     feature_arrays = []
     for syllable_features in featurized_syllables:
@@ -72,20 +72,21 @@ def numpyify_data(featurized_syllables: List[Dict[str, float]],
 
 
 def evaluate(test_data: np.ndarray, test_labels: np.ndarray,
-             classifier):
-    predicted_labels = classifier.predict(test_data)
+             classifier, test_lengths=None):
+    if isinstance(classifier, StructuredPerceptron):
+        predicted_labels = classifier.predict(test_data, test_lengths)
+    else:
+        predicted_labels = classifier.predict(test_data)
     label_names = ['short', 'long']
     logging.info(classification_report(test_labels, predicted_labels,
                                        target_names=label_names))
 
 
 def log_feature_importances(classifier, features: List[str]):
-    if isinstance(classifier, LogisticRegression) \
-            or isinstance(classifier, Perceptron):
-        importances = abs(classifier.coef_[0])
-    elif isinstance(classifier, RandomForestClassifier) \
-            or isinstance(classifier, DecisionTreeClassifier):
+    if hasattr(classifier, 'feature_importances_'):
         importances = classifier.feature_importances_
+    elif hasattr(classifier, 'coef_'):
+        importances = abs(classifier.coef_[0])
     else:
         logging.warning('Unsupported classifier for feature ranking')
         return
@@ -114,64 +115,86 @@ def initialize_logging():
     logging.getLogger('').addHandler(console)
 
 
-if __name__ == '__main__':
-    initialize_logging()
-
-    use_features = ALL_FEATURES
-    logging.info(f'Using features: {list(sorted(use_features))}')
-
-    # PREPROCESSED_DATA_PATH or PREPROCESSED_UNIQUE_DATA_PATH
-    data_path = PREPROCESSED_UNIQUE_DATA_PATH
+def prepare_data(use_features: Set[str], data_path: str) \
+        -> Tuple[np.ndarray, np.ndarray, List[int], List[str]]:
     logging.info(f'Reading data from path: {data_path}')
     syllabified_words = read_syllabified_words(data_path)
     logging.info(f'Total number of words (train+test): '
                  f'{len(syllabified_words)}')
 
+    logging.info(f'Using features: {list(sorted(use_features))}')
     if VOCAB_FEATURE in use_features:
         vocabulary = build_vocabulary(syllabified_words)
     else:
         vocabulary = UNK_VOCABULARY
+
+    word_lengths = [len(word) for word in syllabified_words]
+    # assemble_data flattens all the words into a long list of syllables
     syl_features, label_list, features = assemble_data(syllabified_words,
                                                        vocabulary,
                                                        use_features)
-
-    classifier = RandomForestClassifier(min_samples_split=2, max_features=5,
-                                        n_estimators=75)
-    # classifier = Perceptron(max_iter=1000)
-    logging.info(f'Classifier type: {classifier.__class__.__name__}')
-    logging.info(f'Hyperparameters: min_samples_split=2, max_features=5, '
-                 f'n_estimators=75')
-
     data, labels = numpyify_data(syl_features, label_list, features)
 
-    # Don't hold two copies of the features, free up memory
+    # Don't hold two copies of the features, explicitly free up memory
     del syllabified_words
     del vocabulary
     del syl_features
     del label_list
+
+    return data, labels, word_lengths, features
+
+
+def kfold_train_evaluate(classifier, data: np.ndarray, labels: np.ndarray,
+                         word_lengths: List[int], features: List[str],
+                         fold_count: int, evaluate_folds: int):
+    logging.info(f'K-fold cross-validation with {fold_count} folds, '
+                 f'evaluate on {evaluate_folds} of them')
+
+    folds = list(
+        SequenceKFold(word_lengths, n_folds=fold_count, shuffle=True)
+    )[:evaluate_folds]
+
+    for i, (train_index, train_lengths, test_index, test_lengths) \
+            in enumerate(folds):
+        logging.info(f'Fold # {i + 1}')
+
+        train_data, test_data = data[train_index], data[test_index]
+        train_labels, test_labels = labels[train_index], labels[test_index]
+
+        if isinstance(classifier, StructuredPerceptron):
+            classifier.fit(train_data, train_labels, train_lengths)
+        else:
+            classifier.fit(train_data, train_labels)
+
+        logging.info('Training set performance:')
+        evaluate(train_data, train_labels, classifier, train_lengths)
+
+        logging.info('Test set performance:')
+        evaluate(test_data, test_labels, classifier, test_lengths)
+
+    logging.info('Feature importances for most recent train/test split')
+    log_feature_importances(classifier, features)
+
+
+if __name__ == '__main__':
+    initialize_logging()
+
+    # PREPROCESSED_DATA_PATH or PREPROCESSED_UNIQUE_DATA_PATH
+    data_path = PREPROCESSED_UNIQUE_DATA_PATH
+    use_features = ALL_FEATURES
+    data, labels, word_lengths, features = prepare_data(use_features,
+                                                        data_path)
+
+    classifier = RandomForestClassifier(min_samples_split=5, max_features=5,
+                                        n_estimators=75)
+    logging.info(f'Classifier type: {classifier.__class__.__name__}')
+    logging.info(f'Hyperparameters: min_samples_split=5, max_features=5, '
+                 f'n_estimators=75')
 
     # 5 folds: 80-20 train/test split
     fold_count = 5
     # Only actually train and evaluate on some of them
     # (saves time when dataset sufficiently large and all folds are similar)
     evaluate_folds = 3
-    logging.info(f'K-fold cross-validation with {fold_count} folds, '
-                 f'evaluate on {evaluate_folds} of them')
-    kf = KFold(n_splits=fold_count, shuffle=True)
-
-    folds = list(kf.split(data, labels))[:evaluate_folds]
-    for i, (train_index, test_index) in enumerate(folds):
-        logging.info(f'Fold # {i + 1}')
-        train_data, test_data = data[train_index], data[test_index]
-        train_labels, test_labels = labels[train_index], labels[test_index]
-
-        classifier.fit(train_data, train_labels)
-
-        logging.info('Training set performance:')
-        evaluate(train_data, train_labels, classifier)
-
-        logging.info('Test set performance:')
-        evaluate(test_data, test_labels, classifier)
-
-    logging.info('Feature importances for most recent train/test split')
-    log_feature_importances(classifier, features)
+    kfold_train_evaluate(classifier, data, labels, word_lengths, features,
+                         fold_count, evaluate_folds)

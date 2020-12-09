@@ -1,0 +1,73 @@
+Using features: ['((ante)pen)ultimate', '((ante)pen)ultimate + que', '(post)initial', 'adjacent coda type', 'adjacent syllable type', 'coda', 'coda type', 'diphthong', 'even/odd index', 'rhyme', 'syllable type', 'vowel', 'whole syllable (vocab)']
+Reading data from path: ./data/Latin_words_preprocessed_unique.txt
+Total number of words (train+test): 23404
+Full vocabulary size: 1362
+Extracted 1662 features for 1362 syllables in vocabulary
+Classifier type: XGBClassifier
+Hyperparameters: n_estimators=75, max_depth=200
+K-fold cross-validation with 5 folds, evaluate on 3 of them
+Fold # 1
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.92      0.95      0.94     41752
+        long       0.89      0.83      0.86     19941
+
+    accuracy                           0.91     61693
+   macro avg       0.91      0.89      0.90     61693
+weighted avg       0.91      0.91      0.91     61693
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.89      0.93      0.91     10445
+        long       0.84      0.77      0.80      4977
+
+    accuracy                           0.88     15422
+   macro avg       0.86      0.85      0.86     15422
+weighted avg       0.88      0.88      0.88     15422
+
+Fold # 2
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.92      0.95      0.94     41764
+        long       0.89      0.83      0.86     19928
+
+    accuracy                           0.91     61692
+   macro avg       0.91      0.89      0.90     61692
+weighted avg       0.91      0.91      0.91     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.90      0.93      0.91     10433
+        long       0.83      0.77      0.80      4990
+
+    accuracy                           0.88     15423
+   macro avg       0.86      0.85      0.86     15423
+weighted avg       0.87      0.88      0.87     15423
+
+Fold # 3
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.92      0.95      0.94     41776
+        long       0.89      0.83      0.86     19915
+
+    accuracy                           0.91     61691
+   macro avg       0.91      0.89      0.90     61691
+weighted avg       0.91      0.91      0.91     61691
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.90      0.93      0.91     10421
+        long       0.85      0.77      0.81      5003
+
+    accuracy                           0.88     15424
+   macro avg       0.87      0.85      0.86     15424
+weighted avg       0.88      0.88      0.88     15424
+
+Feature importances for most recent train/test split
+<crashed>
