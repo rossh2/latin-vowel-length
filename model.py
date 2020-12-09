@@ -13,7 +13,7 @@ from sklearn.tree import DecisionTreeClassifier
 from features import build_syllable_vocabulary, cap_vocabulary, \
     extract_features, is_long_syllable, VOCAB_FEATURE, \
     UNK_VOCABULARY, ALL_FEATURES
-from preprocess import read_syllabified_words, PREPROCESSED_DATA_PATH
+from preprocess import read_syllabified_words, PREPROCESSED_UNIQUE_DATA_PATH
 
 
 def build_vocabulary(syllabified_words: List[List[str]], cap_size=10000) \
@@ -122,7 +122,7 @@ if __name__ == '__main__':
     logging.info(f'Using features: {list(sorted(use_features))}')
 
     # PREPROCESSED_DATA_PATH or PREPROCESSED_UNIQUE_DATA_PATH
-    data_path = PREPROCESSED_DATA_PATH
+    data_path = PREPROCESSED_UNIQUE_DATA_PATH
     logging.info(f'Reading data from path: {data_path}')
     syllabified_words = read_syllabified_words(data_path)
     logging.info(f'Total number of words (train+test): '
@@ -137,10 +137,10 @@ if __name__ == '__main__':
                                                        use_features)
 
     classifier = RandomForestClassifier(min_samples_split=5, max_features=5,
-                                        n_estimators=50)
+                                        n_estimators=75)
     logging.info(f'Classifier type: {classifier.__class__.__name__}')
     logging.info(f'Hyperparameters: min_samples_split=5, max_features=5, '
-                 f'n_estimators=50')
+                 f'n_estimators=75')
 
     data, labels = numpyify_data(syl_features, label_list, features)
 
@@ -160,12 +160,17 @@ if __name__ == '__main__':
     kf = KFold(n_splits=fold_count, shuffle=True)
 
     folds = list(kf.split(data, labels))[:evaluate_folds]
-    for train_index, test_index in folds:
+    for i, (train_index, test_index) in enumerate(folds):
+        logging.info(f'Fold # {i + 1}')
         train_data, test_data = data[train_index], data[test_index]
         train_labels, test_labels = labels[train_index], labels[test_index]
 
         classifier.fit(train_data, train_labels)
 
+        logging.info('Training set performance:')
+        evaluate(train_data, train_labels, classifier)
+
+        logging.info('Test set performance:')
         evaluate(test_data, test_labels, classifier)
 
     logging.info('Feature importances for most recent train/test split')

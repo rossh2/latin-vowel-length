@@ -1,7 +1,0 @@
-Using features: ['adjacent_coda_type', 'adjacent_syllable_type', 'antepenultimate', 'coda', 'coda_type', 'diphthong', 'postinitial', 'que', 'rhyme', 'syllable_type', 'vocab', 'vowel']
-Reading data from path: ./data/Latin_words_preprocessed.txt
-Total number of words (train+test): 95180
-Full vocabulary size: 1362
-Extracted 1660 features for 1362 syllables in vocabulary
-Classifier type: RandomForestClassifier
-Hyperparameters: min_samples_split=5, max_features=5, n_estimators=50

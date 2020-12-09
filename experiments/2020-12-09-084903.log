@@ -1,4 +1,5 @@
 Using features: ['adjacent_coda_type', 'adjacent_syllable_type', 'antepenultimate', 'coda', 'coda_type', 'diphthong', 'postinitial', 'que', 'rhyme', 'syllable_type', 'vocab', 'vowel']
+Reading data from path: ./data/Latin_words_preprocessed_unique.txt
 Vocabulary size: 1362
 Extracted 1661 features for 1362 syllables in vocabulary
 Classifier type: RandomForestClassifier
