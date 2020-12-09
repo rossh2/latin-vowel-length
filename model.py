@@ -11,7 +11,8 @@ from sklearn.model_selection import KFold
 from sklearn.tree import DecisionTreeClassifier
 
 from features import build_syllable_vocabulary, cap_vocabulary, \
-    extract_features, is_long_syllable, ALL_FEATURES
+    extract_features, is_long_syllable, VOCAB_FEATURE, \
+    UNK_VOCABULARY, ALL_FEATURES
 from preprocess import read_syllabified_words, PREPROCESSED_DATA_PATH
 
 
@@ -30,7 +31,6 @@ def assemble_data(syllabified_words: List[List[str]], vocabulary: List[str],
     featurized_syllables = []
     label_list = []
 
-    logging.info(f'Using features: {list(sorted(use_features))}')
     features = set()
     for word in syllabified_words:
         word_syllable_features = extract_features(word, vocabulary,
@@ -113,11 +113,18 @@ def initialize_logging():
 if __name__ == '__main__':
     initialize_logging()
 
+    use_features = ALL_FEATURES
+    logging.info(f'Using features: {list(sorted(use_features))}')
+
     syllabified_words = read_syllabified_words(PREPROCESSED_DATA_PATH)
-    vocabulary = build_vocabulary(syllabified_words)
+
+    if VOCAB_FEATURE in use_features:
+        vocabulary = build_vocabulary(syllabified_words)
+    else:
+        vocabulary = UNK_VOCABULARY
     syl_features, label_list, features = assemble_data(syllabified_words,
                                                        vocabulary,
-                                                       ALL_FEATURES)
+                                                       use_features)
 
     classifier = RandomForestClassifier(min_samples_split=5, max_features=5,
                                         n_estimators=50)
@@ -128,6 +135,8 @@ if __name__ == '__main__':
     data, labels = numpyify_data(syl_features, label_list, features)
 
     # Don't hold two copies of the features, free up memory
+    del syllabified_words
+    del vocabulary
     del syl_features
     del label_list
 

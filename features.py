@@ -2,13 +2,16 @@ from collections import defaultdict
 from typing import List, Dict, Iterable
 
 from syllabify import identify_syllable_type, is_diphthong, extract_vowels, \
-    extract_coda
+    extract_coda, get_coda_type
 
 UNK = 'UNK'
+UNK_VOCABULARY = [UNK]
 
 VOCAB_FEATURE = 'vocab'
 SYLLABLE_TYPE_FEATURE = 'syllable_type'
 ADJ_TYPE_FEATURE = 'adjacent_syllable_type'
+CODA_TYPE_FEATURE = 'coda_type'
+ADJ_CODA_TYPE_FEATURE = 'adjacent_coda_type'
 VOWEL_FEATURE = 'vowel'
 CODA_FEATURE = 'coda'
 RHYME_FEATURE = 'rhyme'
@@ -16,12 +19,25 @@ DIPHTHONG_FEATURE = 'diphthong'
 POSTINIT_FEATURE = 'postinitial'
 ANTEPEN_FEATURE = 'antepenultimate'
 QUE_FEATURE = 'que'
-ALL_FEATURES = frozenset(
-    {VOCAB_FEATURE,
-     SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE,
-     VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE,
-     POSTINIT_FEATURE, ANTEPEN_FEATURE,
-     ADJ_TYPE_FEATURE, QUE_FEATURE})
+ALL_FEATURES = frozenset({
+    VOCAB_FEATURE,
+    SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
+    VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE,
+    POSTINIT_FEATURE, ANTEPEN_FEATURE,
+    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE, QUE_FEATURE
+})
+TYPE_ONLY_FEATURES = frozenset({
+    SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
+    VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE,
+    POSTINIT_FEATURE, ANTEPEN_FEATURE,
+    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE, QUE_FEATURE
+})
+RHYME_ONLY_FEATURES = frozenset({
+    DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
+    VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE,
+    POSTINIT_FEATURE, ANTEPEN_FEATURE,
+    ADJ_CODA_TYPE_FEATURE, QUE_FEATURE
+})
 
 
 def build_syllable_vocabulary(words: List[List[str]]) -> Dict[str, int]:
@@ -78,17 +94,37 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
                 feature_dict[UNK] = 1.0
 
         if SYLLABLE_TYPE_FEATURE in use_features:
-            # Add syllable type
             syl_type = syllable_types[i]
             feature_dict['TYPE=' + syl_type] = 1.0
 
+        if CODA_TYPE_FEATURE in use_features:
+            coda_type = get_coda_type(syllable_types[i])
+            if coda_type:
+                feature_dict['CODA_TYPE=' + coda_type] = 1.0
+            else:
+                feature_dict['NO_CODA'] = 1.0
+
         if ADJ_TYPE_FEATURE in use_features:
             if i != 0:
-                pre_type = syllable_types[i-1]
+                pre_type = syllable_types[i - 1]
                 feature_dict['PRE_TYPE=' + pre_type] = 1.0
             if i != ult_i:
-                post_type = syllable_types[i+1]
+                post_type = syllable_types[i + 1]
                 feature_dict['POST_TYPE=' + post_type] = 1.0
+
+        if ADJ_CODA_TYPE_FEATURE in use_features:
+            if i != 0:
+                pre_coda_type = get_coda_type(syllable_types[i - 1])
+                if pre_coda_type:
+                    feature_dict['PRE_CODA_TYPE=' + pre_coda_type] = 1.0
+                else:
+                    feature_dict['NO_PRE_CODA'] = 1.0
+            if i != ult_i:
+                post_coda_type = get_coda_type(syllable_types[i + 1])
+                if post_coda_type:
+                    feature_dict['POST_CODA_TYPE=' + post_coda_type] = 1.0
+                else:
+                    feature_dict['NO_POST_CODA'] = 1.0
 
         if VOWEL_FEATURE in use_features:
             feature_dict['VOWEL=' + vowels] = 1.0
@@ -104,6 +140,7 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
                 feature_dict['NO_CODA'] = 1.0
 
         if RHYME_FEATURE in use_features:
+            # TODO use vocabulary of rhymes or allow all?
             rhyme = vowels + coda
             feature_dict['RHYME=' + rhyme] = 1.0
 

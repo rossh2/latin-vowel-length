@@ -271,6 +271,15 @@ def identify_syllable_type_Cstar(syllable: str) -> str:
             f'Invalid nucleus "VVV" or non-adjacent Vs for syllable {syllable}')
 
 
+def get_coda_type(syllable_type: str) -> str:
+    if syllable_type.endswith('C*'):
+        return 'C*'
+    elif syllable_type.endswith('C'):
+        return 'C'
+    else:
+        return ''
+
+
 def is_diphthong(syllable: str) -> bool:
     for diphthong in DIPHTHONGS:
         if diphthong in syllable:
