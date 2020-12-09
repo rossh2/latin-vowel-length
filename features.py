@@ -1,19 +1,25 @@
 from collections import defaultdict
 from typing import List, Dict, Iterable
 
-from syllabify import identify_syllable_type, is_diphthong, extract_vowels
+from syllabify import identify_syllable_type, is_diphthong, extract_vowels, \
+    extract_coda
 
 UNK = 'UNK'
 
 VOCAB_FEATURE = 'vocab'
 SYLLABLE_TYPE_FEATURE = 'syllable_type'
+ADJ_TYPE_FEATURE = 'adjacent_syllable_type'
 VOWEL_FEATURE = 'vowel'
+CODA_FEATURE = 'coda'
 DIPHTHONG_FEATURE = 'diphthong'
 POSTINIT_FEATURE = 'postinitial'
 ANTEPEN_FEATURE = 'antepenultimate'
+QUE_FEATURE = 'que'
 ALL_FEATURES = frozenset(
-    {VOCAB_FEATURE, SYLLABLE_TYPE_FEATURE, VOWEL_FEATURE, DIPHTHONG_FEATURE,
-     POSTINIT_FEATURE, ANTEPEN_FEATURE})
+    {VOCAB_FEATURE,
+     SYLLABLE_TYPE_FEATURE, VOWEL_FEATURE, DIPHTHONG_FEATURE, CODA_FEATURE,
+     POSTINIT_FEATURE, ANTEPEN_FEATURE,
+     ADJ_TYPE_FEATURE, QUE_FEATURE})
 
 
 def build_syllable_vocabulary(words: List[List[str]]) -> Dict[str, int]:
@@ -35,7 +41,9 @@ def cap_vocabulary(vocabulary: Dict[str, int], max_size: int) -> List[str]:
     capped_vocab = list(
         map(lambda item: item[0], sorted_vocab[:(max_size - 1)]))
 
-    capped_vocab.insert(0, UNK)
+    if UNK not in capped_vocab:
+        capped_vocab.insert(0, UNK)
+
     return capped_vocab
 
 
@@ -48,11 +56,15 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
     penult_i = syl_length - 2
     antepenult_i = syl_length - 3
 
+    cleaned_syllables = [clean_syllable(syllable) for syllable in syllables]
+    syllable_types = [identify_syllable_type(syllable)
+                      for syllable in cleaned_syllables]
+
     for i in range(syl_length):
         # Use for-i so that adjacent syllables can be accessed if needed
         feature_dict = defaultdict(float)
 
-        cleaned_syllable = clean_syllable(syllables[i])
+        cleaned_syllable = cleaned_syllables[i]
         vowels = extract_vowels(cleaned_syllable)
 
         if VOCAB_FEATURE in use_features:
@@ -64,8 +76,16 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
 
         if SYLLABLE_TYPE_FEATURE in use_features:
             # Add syllable type
-            syl_type = identify_syllable_type(cleaned_syllable)
+            syl_type = syllable_types[i]
             feature_dict['TYPE=' + syl_type] = 1.0
+
+        if ADJ_TYPE_FEATURE in use_features:
+            if i != 0:
+                pre_type = syllable_types[i-1]
+                feature_dict['PRE_TYPE=' + pre_type] = 1.0
+            if i != ult_i:
+                post_type = syllable_types[i+1]
+                feature_dict['POST_TYPE=' + post_type] = 1.0
 
         if VOWEL_FEATURE in use_features:
             feature_dict['VOWEL=' + vowels] = 1.0
@@ -73,6 +93,13 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
         if DIPHTHONG_FEATURE in use_features:
             if len(vowels) > 1:
                 feature_dict['DIPHTHONG'] = 1.0
+
+        if CODA_FEATURE in use_features:
+            coda = extract_coda(cleaned_syllable)
+            if coda:
+                feature_dict['CODA=' + coda] = 1.0
+            else:
+                feature_dict['NO_CODA'] = 1.0
 
         if POSTINIT_FEATURE in use_features:
             if i == 0:
@@ -88,6 +115,16 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
                 feature_dict['PENULT'] = 1.0
             elif i == antepenult_i:
                 feature_dict['ANTEPENULT'] = 1.0
+
+        if QUE_FEATURE in use_features and ANTEPEN_FEATURE in use_features:
+            next_syl = cleaned_syllables[i + 1] if i != ult_i else None
+            if next_syl == 'que':
+                if i == ult_i - 1:
+                    feature_dict['ULT+QUE'] = 1.0
+                elif i == penult_i - 1:
+                    feature_dict['PENULT+QUE'] = 1.0
+                elif i == antepenult_i - 1:
+                    feature_dict['ANTEPENULT+QUE'] = 1.0
 
         features.append(feature_dict)
 

@@ -1,5 +1,5 @@
-from typing import List
 import re
+from typing import List
 
 CONSONANTS = 'bcdfghjlmnpqrstvxz'
 
@@ -283,3 +283,12 @@ def extract_vowels(syllable: str) -> str:
     if not match:
         raise ValueError(f'Invalid syllable {syllable} contains no vowels')
     return match.group(2)
+
+
+def extract_coda(syllable: str) -> str:
+    vowel_indices = [i for i, s in enumerate(syllable)
+                     if s in VOWELS]
+    if len(vowel_indices) == 0:
+        raise ValueError(f'Invalid syllable {syllable} contains no vowels')
+    coda = syllable[(vowel_indices[-1] + 1):]
+    return coda
