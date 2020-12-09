@@ -136,10 +136,10 @@ if __name__ == '__main__':
                                                        vocabulary,
                                                        use_features)
 
-    classifier = RandomForestClassifier(min_samples_split=5, max_features=5,
+    classifier = RandomForestClassifier(min_samples_split=2, max_features=5,
                                         n_estimators=75)
     logging.info(f'Classifier type: {classifier.__class__.__name__}')
-    logging.info(f'Hyperparameters: min_samples_split=5, max_features=5, '
+    logging.info(f'Hyperparameters: min_samples_split=2, max_features=5, '
                  f'n_estimators=75')
 
     data, labels = numpyify_data(syl_features, label_list, features)
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     fold_count = 5
     # Only actually train and evaluate on some of them
     # (saves time when dataset sufficiently large and all folds are similar)
-    evaluate_folds = 2
+    evaluate_folds = 3
     logging.info(f'K-fold cross-validation with {fold_count} folds, '
                  f'evaluate on {evaluate_folds} of them')
     kf = KFold(n_splits=fold_count, shuffle=True)

@@ -7,42 +7,44 @@ from syllabify import identify_syllable_type, is_diphthong, extract_vowels, \
 UNK = 'UNK'
 UNK_VOCABULARY = [UNK]
 
-VOCAB_FEATURE = 'vocab'
-SYLLABLE_TYPE_FEATURE = 'syllable_type'
-ADJ_TYPE_FEATURE = 'adjacent_syllable_type'
-CODA_TYPE_FEATURE = 'coda_type'
-ADJ_CODA_TYPE_FEATURE = 'adjacent_coda_type'
+VOCAB_FEATURE = 'whole syllable (vocab)' # formerly known as 'vocab'
+SYLLABLE_TYPE_FEATURE = 'syllable type'
+ADJ_TYPE_FEATURE = 'adjacent syllable type'
+CODA_TYPE_FEATURE = 'coda type'
+ADJ_CODA_TYPE_FEATURE = 'adjacent coda type'
 VOWEL_FEATURE = 'vowel'
 CODA_FEATURE = 'coda'
 RHYME_FEATURE = 'rhyme'
 DIPHTHONG_FEATURE = 'diphthong'
-POSTINIT_FEATURE = 'postinitial'
-ANTEPEN_FEATURE = 'antepenultimate'
-QUE_FEATURE = 'que'
+POSTINIT_FEATURE = '(post)initial'
+ANTEPEN_FEATURE = '((ante)pen)ultimate'
+QUE_FEATURE = '((ante)pen)ultimate + que'
+EVEN_ODD_FEATURE = 'even/odd index'
+
 ALL_FEATURES = frozenset({
     VOCAB_FEATURE,
     SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
     VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE,
-    POSTINIT_FEATURE, ANTEPEN_FEATURE,
-    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE, QUE_FEATURE
+    POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
+    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE
 })
 RHYME_AND_TYPE_FEATURES = frozenset({
     SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
     VOWEL_FEATURE, CODA_FEATURE,
-    POSTINIT_FEATURE, ANTEPEN_FEATURE,
-    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE, QUE_FEATURE
+    POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
+    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE
 })
 TYPE_ONLY_FEATURES = frozenset({
     SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
     VOWEL_FEATURE, CODA_FEATURE,
-    POSTINIT_FEATURE, ANTEPEN_FEATURE,
-    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE, QUE_FEATURE
+    POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
+    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE
 })
 CODA_TYPE_ONLY_FEATURES = frozenset({
     DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
     VOWEL_FEATURE, CODA_FEATURE,
-    POSTINIT_FEATURE, ANTEPEN_FEATURE,
-    ADJ_CODA_TYPE_FEATURE, QUE_FEATURE
+    POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
+    ADJ_CODA_TYPE_FEATURE
 })
 
 
@@ -177,6 +179,12 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
                     feature_dict['PENULT+QUE'] = 1.0
                 elif i == antepenult_i - 1:
                     feature_dict['ANTEPENULT+QUE'] = 1.0
+
+        if EVEN_ODD_FEATURE in use_features:
+            if i % 2 == 0:
+                feature_dict['EVEN'] = 1.0
+            else:
+                feature_dict['ODD'] = 1.0
 
         features.append(feature_dict)
 
