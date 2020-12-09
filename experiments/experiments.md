@@ -162,6 +162,88 @@ Feature ranking:
 24. feature res (8.226)
 25. feature VOWEL=au (7.284)
 
+Using features: ['syllable_type', 'diphthong', 'vowel', 'antepenultimate', 'postinitial', 'vocab']
+Extracted 1400 features for 1362 syllables in vocabulary
+Hyperparameters: min_samples_split=5, max_features=5, n_estimators=50
+              precision    recall  f1-score   support
+
+       short       0.91      0.94      0.92     32391
+        long       0.85      0.79      0.82     14670
+
+    accuracy                           0.89     47061
+   macro avg       0.88      0.87      0.87     47061
+weighted avg       0.89      0.89      0.89     47061
+
+Feature ranking:
+1. feature ULT (100.000)
+2. feature INIT (84.847)
+3. feature PENULT (53.526)
+4. feature VOWEL=o (32.233)
+5. feature POSTINIT (28.371)
+6. feature ANTEPENULT (27.259)
+7. feature DIPHTHONG (24.798)
+8. feature TYPE=CV (24.760)
+9. feature VOWEL=i (24.412)
+10. feature TYPE=CVC (23.935)
+11. feature VOWEL=ae (20.864)
+12. feature TYPE=VC (19.969)
+13. feature VOWEL=e (19.660)
+14. feature VOWEL=u (16.913)
+15. feature o (15.280)
+16. feature VOWEL=a (14.616)
+17. feature TYPE=V (11.549)
+18. feature TYPE=CLV (10.851)
+19. feature non (10.037)
+20. feature de (9.642)
+21. feature tes (8.845)
+22. feature na (8.501)
+23. feature TYPE=VV (8.413)
+24. feature que (8.343)
+25. feature TYPE=CVV (8.197)
+
+Process finished with exit code 0
+
+## Even more features
+
+Using features: ['postinitial', 'vowel', 'syllable_type', 'que', 'antepenultimate', 'adjacent_syllable_type', 'diphthong', 'coda', 'vocab']
+Extracted 1482 features for 1362 syllables in vocabulary
+Hyperparameters: min_samples_split=5, max_features=5, n_estimators=50
+              precision    recall  f1-score   support
+
+       short       0.93      0.96      0.95     32273
+        long       0.91      0.85      0.88     14788
+
+    accuracy                           0.93     47061
+   macro avg       0.92      0.90      0.91     47061
+weighted avg       0.92      0.93      0.92     47061
+
+Feature ranking:
+1. feature ULT (100.000)
+2. feature PENULT (79.724)
+3. feature INIT (66.141)
+4. feature VOWEL=o (59.301)
+5. feature CODA=s (55.137)
+6. feature POST_TYPE=CV (54.919)
+7. feature NO_CODA (53.062)
+8. feature VOWEL=i (45.931)
+9. feature POSTINIT (45.474)
+10. feature PRE_TYPE=CV (44.289)
+11. feature VOWEL=u (43.245)
+12. feature POST_TYPE=CVC (42.551)
+13. feature ANTEPENULT (41.314)
+14. feature VOWEL=e (40.391)
+15. feature VOWEL=a (39.450)
+16. feature CODA=m (33.818)
+17. feature POST_TYPE=V (33.341)
+18. feature TYPE=CVC (32.800)
+19. feature DIPHTHONG (32.150)
+20. feature POST_TYPE=VC (28.498)
+21. feature VOWEL=ae (28.070)
+22. feature CODA=t (26.794)
+23. feature TYPE=CV (25.384)
+24. feature PRE_TYPE=CVC (23.329)
+25. feature TYPE=VC (23.155)
+
 
 # Logistic Regression
 

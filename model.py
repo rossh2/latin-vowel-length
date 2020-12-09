@@ -1,10 +1,13 @@
+import logging
+import sys
+from datetime import datetime
 from typing import List, Tuple, Set, Dict
 
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import KFold
 from sklearn.tree import DecisionTreeClassifier
 
 from features import build_syllable_vocabulary, cap_vocabulary, \
@@ -15,7 +18,7 @@ from preprocess import read_syllabified_words, PREPROCESSED_DATA_PATH
 def build_vocabulary(syllabified_words: List[List[str]]) -> List[str]:
     vocab_dict = build_syllable_vocabulary(syllabified_words)
     vocab_size = len(vocab_dict)
-    print(f'Vocabulary size: {vocab_size}')
+    logging.info(f'Vocabulary size: {vocab_size}')
     vocabulary = cap_vocabulary(vocab_dict, 10000)
 
     return vocabulary
@@ -27,7 +30,7 @@ def assemble_data(syllabified_words: List[List[str]], vocabulary: List[str],
     featurized_syllables = []
     label_list = []
 
-    print(f'Using features: {list(use_features)}')
+    logging.info(f'Using features: {list(use_features)}')
     features = set()
     for word in syllabified_words:
         word_syllable_features = extract_features(word, vocabulary,
@@ -38,8 +41,8 @@ def assemble_data(syllabified_words: List[List[str]], vocabulary: List[str],
                         for key in syllable_features.keys())
 
     feature_count = len(features)
-    print(f'Extracted {feature_count} features '
-          f'for {len(vocabulary)} syllables in vocabulary')
+    logging.info(f'Extracted {feature_count} features '
+                 f'for {len(vocabulary)} syllables in vocabulary')
 
     return featurized_syllables, label_list, list(features)
 
@@ -64,12 +67,14 @@ def numpyify_data(featurized_syllables: List[Dict[str, float]],
 
 
 def evaluate(test_data: np.ndarray, test_labels: np.ndarray,
-             classifier, features: List[str]):
+             classifier):
     predicted_labels = classifier.predict(test_data)
     label_names = ['short', 'long']
-    print(classification_report(test_labels, predicted_labels,
-                                target_names=label_names))
+    logging.info(classification_report(test_labels, predicted_labels,
+                                       target_names=label_names))
 
+
+def log_feature_importances(classifier, features: List[str]):
     if isinstance(classifier, LogisticRegression):
         # log_reg_importances(classifier, features)
         importances = abs(classifier.coef_[0])
@@ -78,34 +83,61 @@ def evaluate(test_data: np.ndarray, test_labels: np.ndarray,
         # forest_feature_importances(classifier, features)
         importances = classifier.feature_importances_
     else:
-        print('Unsupported classifier for feature ranking')
+        logging.warning('Unsupported classifier for feature ranking')
         return
 
     importances = 100.0 * (importances / importances.max())
     indices = np.argsort(importances)[::-1]
 
     # Print the feature ranking
-    print("Feature ranking:")
+    logging.info("Feature ranking:")
     for f in range(min(25, len(features))):
-        print(f'{f + 1}. feature {features[indices[f]]} '
-              f'({importances[indices[f]]:.3f})')
+        logging.info(f'{f + 1}. feature {features[indices[f]]} '
+                     f'({importances[indices[f]]:.3f})')
+    for f in range(25, min(50, len(features))):
+        logging.debug(f'{f + 1}. feature {features[indices[f]]} '
+                      f'({importances[indices[f]]:.3f})')
+
+
+def initialize_logging():
+    date = datetime.today().strftime('%Y-%m-%d-%H%M%S')
+    logging.basicConfig(filename=f'experiments/{date}.log', filemode='w',
+                        format='%(message)s',
+                        level=logging.DEBUG)
+
+    console = logging.StreamHandler(sys.stdout)
+    console.setLevel(logging.INFO)
+    logging.getLogger('').addHandler(console)
 
 
 if __name__ == '__main__':
+    initialize_logging()
+
     syllabified_words = read_syllabified_words(PREPROCESSED_DATA_PATH)
     vocabulary = build_vocabulary(syllabified_words)
     syl_features, label_list, features = assemble_data(syllabified_words,
                                                        vocabulary,
                                                        ALL_FEATURES)
 
-    print(f'Hyperparameters: min_samples_split=5, n_estimators=50')
-    classifier = RandomForestClassifier(min_samples_split=5, n_estimators=50)
+    classifier = RandomForestClassifier(min_samples_split=5, max_features=5,
+                                        n_estimators=50)
+    logging.info(f'Classifier type: {classifier.__name__}')
+    logging.info(f'Hyperparameters: min_samples_split=5, max_features=5, '
+                 f'n_estimators=50')
 
     data, labels = numpyify_data(syl_features, label_list, features)
 
-    train_data, test_data, train_labels, test_labels = \
-        train_test_split(data, labels, test_size=0.2)
+    splits = 3
+    logging.info(f'K-fold cross-validation with {splits} splits')
+    kf = KFold(n_splits=splits, shuffle=True)
 
-    classifier.fit(train_data, train_labels)
+    for train_index, test_index in kf.split(data, labels):
+        train_data, test_data = data[train_index], data[test_index]
+        train_labels, test_labels = labels[train_index], labels[test_index]
 
-    evaluate(test_data, test_labels, classifier, features)
+        classifier.fit(train_data, train_labels)
+
+        evaluate(test_data, test_labels, classifier)
+
+    logging.info('Feature importances for most recent train/test split')
+    log_feature_importances(classifier, features)

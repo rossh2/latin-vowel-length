@@ -1,0 +1,78 @@
+Vocabulary size: 1362
+Using features: ['que', 'diphthong', 'vocab', 'vowel', 'postinitial', 'antepenultimate', 'syllable_type', 'coda', 'adjacent_syllable_type']
+Extracted 1482 features for 1362 syllables in vocabulary
+Classifier type: <class 'sklearn.ensemble._forest.RandomForestClassifier'>
+Hyperparameters: min_samples_split=5, max_features=5, n_estimators=50
+K-fold cross-validation with 5 splits
+              precision    recall  f1-score   support
+
+       short       0.93      0.96      0.95     32451
+        long       0.90      0.85      0.87     14610
+
+    accuracy                           0.92     47061
+   macro avg       0.92      0.90      0.91     47061
+weighted avg       0.92      0.92      0.92     47061
+
+              precision    recall  f1-score   support
+
+       short       0.93      0.96      0.95     32390
+        long       0.90      0.85      0.87     14671
+
+    accuracy                           0.92     47061
+   macro avg       0.92      0.90      0.91     47061
+weighted avg       0.92      0.92      0.92     47061
+
+              precision    recall  f1-score   support
+
+       short       0.93      0.96      0.94     32302
+        long       0.90      0.85      0.87     14759
+
+    accuracy                           0.92     47061
+   macro avg       0.92      0.90      0.91     47061
+weighted avg       0.92      0.92      0.92     47061
+
+              precision    recall  f1-score   support
+
+       short       0.93      0.96      0.95     32352
+        long       0.90      0.85      0.88     14709
+
+    accuracy                           0.92     47061
+   macro avg       0.92      0.90      0.91     47061
+weighted avg       0.92      0.92      0.92     47061
+
+              precision    recall  f1-score   support
+
+       short       0.93      0.96      0.95     32411
+        long       0.90      0.85      0.87     14649
+
+    accuracy                           0.92     47060
+   macro avg       0.92      0.90      0.91     47060
+weighted avg       0.92      0.92      0.92     47060
+
+Feature importances for most recent train/test split
+Feature ranking:
+1. feature ULT (100.000)
+2. feature PENULT (77.910)
+3. feature INIT (62.088)
+4. feature POST_TYPE=CV (57.612)
+5. feature VOWEL=o (53.942)
+6. feature CODA=s (52.651)
+7. feature NO_CODA (49.128)
+8. feature POSTINIT (46.386)
+9. feature VOWEL=i (41.024)
+10. feature VOWEL=e (40.418)
+11. feature ANTEPENULT (40.353)
+12. feature PRE_TYPE=CV (40.259)
+13. feature DIPHTHONG (40.067)
+14. feature TYPE=CVC (37.224)
+15. feature VOWEL=a (36.537)
+16. feature POST_TYPE=CVC (36.172)
+17. feature VOWEL=u (34.534)
+18. feature POST_TYPE=V (34.161)
+19. feature CODA=m (31.244)
+20. feature TYPE=VC (26.602)
+21. feature TYPE=CV (26.420)
+22. feature POST_TYPE=VC (25.283)
+23. feature CODA=t (22.178)
+24. feature VOWEL=ae (19.407)
+25. feature PRE_TYPE=CVC (19.349)
