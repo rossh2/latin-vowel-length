@@ -8,6 +8,7 @@ STOPS_FRICATIVES = 'bcdfgpst'
 APPROX = 'lr'  # v is an approximant ([w]) but does not do muta cum liquida
 ONSET_CLUSTERS = [muta + liquida
                   for muta in STOPS_FRICATIVES for liquida in APPROX]
+DOUBLE_CONSONANTS = 'xz'
 
 VOWELS = 'aeiouy'
 DIPHTHONGS = ['ae', 'au', 'oe']  # + ['ei', 'eu']
@@ -180,15 +181,17 @@ def identify_syllable_type_V(syllable: str) -> str:
         return 'V'
     elif syllable[1] in VOWELS:
         # VV...
-        if len(syllable) == 2:
+        coda = syllable[2:]
+        if len(coda) == 0:
             return 'VV'
-        elif len(syllable) == 3:
+        elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'VVC'
         else:
             return 'VVC*'
     else:
         # VC...
-        if len(syllable) == 2:
+        coda = syllable[1:]
+        if len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'VC'
         else:
             return 'VC*'
@@ -202,7 +205,7 @@ def identify_syllable_type_CV(syllable: str) -> str:
             raise ValueError(f'Invalid nucleus "VVV" for syllable {syllable}')
         if len(coda) == 0:
             return 'CVV'
-        elif len(coda) == 1:
+        elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'CVVC'
         else:
             return 'CVVC*'
@@ -211,7 +214,7 @@ def identify_syllable_type_CV(syllable: str) -> str:
         coda = syllable[3:] if syllable[:2] == 'qu' else syllable[2:]
         if len(coda) == 0:
             return 'CV'
-        elif len(coda) == 1:
+        elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'CVC'
         else:
             return 'CVC*'
@@ -228,7 +231,7 @@ def identify_syllable_type_CL(syllable: str) -> str:
             raise ValueError(f'Invalid nucleus "VVV" for syllable {syllable}')
         if len(coda) == 0:
             return 'CLVV'
-        elif len(coda) == 1:
+        elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'CLVVC'
         else:
             return 'CLVVC*'
@@ -237,7 +240,7 @@ def identify_syllable_type_CL(syllable: str) -> str:
         coda = syllable[3:]
         if len(coda) == 0:
             return 'CLV'
-        elif len(coda) == 1:
+        elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'CLVC'
         else:
             return 'CLVC*'
@@ -254,7 +257,7 @@ def identify_syllable_type_Cstar(syllable: str) -> str:
         # C*V(C)...
         if len(coda) == 0:
             return 'C*V'
-        if len(coda) == 1:
+        if len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'C*VC'
         else:
             return 'C*VC*'
@@ -262,7 +265,7 @@ def identify_syllable_type_Cstar(syllable: str) -> str:
         # C*VV(C)...
         if len(coda) == 0:
             return 'C*VV'
-        elif len(coda) == 1:
+        elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'C*VVC'
         else:
             return 'C*VVC*'

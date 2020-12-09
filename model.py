@@ -122,7 +122,8 @@ def prepare_data(use_features: Set[str], data_path: str) \
     logging.info(f'Total number of words (train+test): '
                  f'{len(syllabified_words)}')
 
-    logging.info(f'Using features: {list(sorted(use_features))}')
+    feature_string = ', '.join(sorted(use_features))
+    logging.info(f'Using features: {feature_string}')
     if VOCAB_FEATURE in use_features:
         vocabulary = build_vocabulary(syllabified_words)
     else:

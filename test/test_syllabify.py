@@ -370,6 +370,16 @@ class TestIdentifySyllableType(TestCase):
         syl_type = identify_syllable_type(syllable)
         self.assertEqual('VC', syl_type)
 
+    def test_vx(self):
+        syllable = 'ax'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('VC*', syl_type)
+
+    def test_vz(self):
+        syllable = 'az'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('VC*', syl_type)
+
     def test_vcstar(self):
         syllable = 'ast'
         syl_type = identify_syllable_type(syllable)
@@ -389,6 +399,17 @@ class TestIdentifySyllableType(TestCase):
         syllable = 'non'
         syl_type = identify_syllable_type(syllable)
         self.assertEqual('CVC', syl_type)
+
+    # TODO systematically add tests for v,z whereever a c occurs
+    def test_cvx(self):
+        syllable = 'pax'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVC*', syl_type)
+
+    def test_cvz(self):
+        syllable = 'paz'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CVC*', syl_type)
 
     def test_chvc(self):
         syllable = 'phis'
