@@ -1,0 +1,101 @@
+Vocabulary size: 1362
+Using features: ['adjacent_syllable_type', 'antepenultimate', 'coda', 'diphthong', 'postinitial', 'que', 'rhyme', 'syllable_type', 'vocab', 'vowel']
+Extracted 1652 features for 1362 syllables in vocabulary
+Classifier type: RandomForestClassifier
+Hyperparameters: min_samples_split=5, max_features=5, n_estimators=50
+K-fold cross-validation with 5 folds, evaluate on 2 of them
+              precision    recall  f1-score   support
+
+       short       0.93      0.95      0.94     32464
+        long       0.89      0.85      0.87     14597
+
+    accuracy                           0.92     47061
+   macro avg       0.91      0.90      0.91     47061
+weighted avg       0.92      0.92      0.92     47061
+
+              precision    recall  f1-score   support
+
+       short       0.93      0.96      0.95     32420
+        long       0.90      0.84      0.87     14641
+
+    accuracy                           0.92     47061
+   macro avg       0.92      0.90      0.91     47061
+weighted avg       0.92      0.92      0.92     47061
+
+Feature importances for most recent train/test split
+Feature ranking:
+1. feature ULT (100.000)
+2. feature PENULT (76.310)
+3. feature INIT (62.410)
+4. feature POST_TYPE=CV (54.435)
+5. feature POSTINIT (44.916)
+6. feature PRE_TYPE=CV (40.941)
+7. feature NO_CODA (40.586)
+8. feature POST_TYPE=CVC (40.264)
+9. feature ANTEPENULT (37.318)
+10. feature CODA=s (31.209)
+11. feature RHYME=o (29.196)
+12. feature POST_TYPE=V (28.888)
+13. feature VOWEL=o (26.051)
+14. feature VOWEL=ae (24.553)
+15. feature PRE_TYPE=CVC (20.719)
+16. feature DIPHTHONG (20.208)
+17. feature POST_TYPE=VC (19.800)
+18. feature VOWEL=i (19.495)
+19. feature RHYME=a (19.449)
+20. feature TYPE=CV (18.657)
+21. feature TYPE=CVC (18.131)
+22. feature TYPE=VC (17.560)
+23. feature VOWEL=e (16.697)
+24. feature CODA=m (16.485)
+25. feature VOWEL=u (16.334)
+26. feature CODA=t (14.957)
+27. feature PRE_TYPE=V (14.489)
+28. feature RHYME=i (14.157)
+29. feature PRE_TYPE=VC (13.943)
+30. feature VOWEL=a (12.005)
+31. feature TYPE=CVV (12.002)
+32. feature TYPE=V (11.779)
+33. feature de (11.696)
+34. feature TYPE=CLV (11.494)
+35. feature RHYME=us (11.460)
+36. feature POST_TYPE=CLV (10.600)
+37. feature RHYME=es (10.566)
+38. feature CODA=r (10.564)
+39. feature que (10.187)
+40. feature RHYME=um (9.849)
+41. feature RHYME=e (9.249)
+42. feature RHYME=ae (9.068)
+43. feature re (9.016)
+44. feature RHYME=os (8.985)
+45. feature RHYME=is (8.613)
+46. feature CODA=ns (8.612)
+47. feature na (8.115)
+48. feature o (7.869)
+49. feature PRE_TYPE=CLV (7.709)
+50. feature ULT+QUE (7.565)
+51. feature POST_TYPE=CVC* (7.512)
+52. feature non (7.426)
+53. feature ta (7.088)
+54. feature pe (6.852)
+55. feature to (6.681)
+56. feature tu (6.595)
+57. feature ro (6.073)
+58. feature VOWEL=au (5.991)
+59. feature RHYME=as (5.953)
+60. feature CODA=n (5.771)
+61. feature RHYME=u (5.651)
+62. feature RHYME=on (5.066)
+63. feature TYPE=VV (4.987)
+64. feature ti (4.832)
+65. feature RHYME=am (4.752)
+66. feature te (4.675)
+67. feature POST_TYPE=CLVC (4.652)
+68. feature si (4.630)
+69. feature se (4.609)
+70. feature RHYME=au (4.444)
+71. feature po (4.395)
+72. feature bi (4.353)
+73. feature CODA=d (4.264)
+74. feature ne (4.242)
+75. feature tes (4.203)

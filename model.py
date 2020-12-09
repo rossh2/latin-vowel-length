@@ -30,7 +30,7 @@ def assemble_data(syllabified_words: List[List[str]], vocabulary: List[str],
     featurized_syllables = []
     label_list = []
 
-    logging.info(f'Using features: {list(use_features)}')
+    logging.info(f'Using features: {list(sorted(use_features))}')
     features = set()
     for word in syllabified_words:
         word_syllable_features = extract_features(word, vocabulary,
@@ -94,7 +94,7 @@ def log_feature_importances(classifier, features: List[str]):
     for f in range(min(25, len(features))):
         logging.info(f'{f + 1}. feature {features[indices[f]]} '
                      f'({importances[indices[f]]:.3f})')
-    for f in range(25, min(50, len(features))):
+    for f in range(25, min(75, len(features))):
         logging.debug(f'{f + 1}. feature {features[indices[f]]} '
                       f'({importances[indices[f]]:.3f})')
 
@@ -121,17 +121,26 @@ if __name__ == '__main__':
 
     classifier = RandomForestClassifier(min_samples_split=5, max_features=5,
                                         n_estimators=50)
-    logging.info(f'Classifier type: {classifier.__name__}')
+    logging.info(f'Classifier type: {classifier.__class__.__name__}')
     logging.info(f'Hyperparameters: min_samples_split=5, max_features=5, '
                  f'n_estimators=50')
 
     data, labels = numpyify_data(syl_features, label_list, features)
 
-    splits = 3
-    logging.info(f'K-fold cross-validation with {splits} splits')
-    kf = KFold(n_splits=splits, shuffle=True)
+    # Don't hold two copies of the features, free up memory
+    del syl_features
+    del label_list
 
-    for train_index, test_index in kf.split(data, labels):
+    # 5 folds: 80-20 train/test split
+    fold_count = 5
+    # Only actually train and evaluate on 2 of them
+    evaluate_folds = 2
+    logging.info(f'K-fold cross-validation with {fold_count} folds, '
+                 f'evaluate on {evaluate_folds} of them')
+    kf = KFold(n_splits=fold_count, shuffle=True)
+
+    folds = list(kf.split(data, labels))[:evaluate_folds]
+    for train_index, test_index in folds:
         train_data, test_data = data[train_index], data[test_index]
         train_labels, test_labels = labels[train_index], labels[test_index]
 
