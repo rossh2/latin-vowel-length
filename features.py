@@ -54,6 +54,9 @@ def build_syllable_vocabulary(words: List[List[str]]) -> Dict[str, int]:
 
 
 def cap_vocabulary(vocabulary: Dict[str, int], max_size: int) -> List[str]:
+    if len(vocabulary) <= max_size:
+        return list(vocabulary.keys())
+
     sorted_vocab = sorted(vocabulary.items(), key=lambda item: item[1],
                           reverse=True)
     capped_vocab = list(

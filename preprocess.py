@@ -5,15 +5,15 @@ from parse import read_corpus_words, RAW_DATA_PATH
 from syllabify import syllabify, identify_syllable_type
 
 PREPROCESSED_DATA_PATH = './data/Latin_words_preprocessed.txt'
+PREPROCESSED_UNIQUE_DATA_PATH = './data/Latin_words_preprocessed_unique.txt'
 
 
-def preprocess_words(path):
+def preprocess_words(path: str) -> List[List[str]]:
     words = read_corpus_words(path)
     word_count = len(words)
     print(f'Read in {word_count} Latin words')
     syllabified_words = [syllabify(word) for word in words]
     real_syllabified_words = []
-    labels = []
     skipped = []
     for word in syllabified_words:
         try:
@@ -29,7 +29,7 @@ def preprocess_words(path):
     return real_syllabified_words
 
 
-def write_syllabified_words(path: str):
+def write_syllabified_words(syllabified_words: List[List[str]], path: str):
     with open(path, mode='w', encoding='utf-8') as out_file:
         for word in syllabified_words:
             line = ' '.join(word) + '\n'
@@ -47,6 +47,17 @@ def read_syllabified_words(path: str) -> List[List[str]]:
     return syllabified_words
 
 
+def write_unique_syllabified_words(in_path: str, out_path: str):
+    syllabified_words = read_syllabified_words(in_path)
+    unique_syllabified_words = list(
+        set(' '.join(word) for word in syllabified_words))
+    write_syllabified_words(
+        [word.split() for word in unique_syllabified_words],
+        out_path)
+
+
 if __name__ == '__main__':
     syllabified_words = preprocess_words(RAW_DATA_PATH)
-    write_syllabified_words(PREPROCESSED_DATA_PATH)
+    write_syllabified_words(syllabified_words, PREPROCESSED_DATA_PATH)
+    write_unique_syllabified_words(PREPROCESSED_DATA_PATH,
+                                   PREPROCESSED_UNIQUE_DATA_PATH)

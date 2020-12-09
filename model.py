@@ -16,11 +16,16 @@ from features import build_syllable_vocabulary, cap_vocabulary, \
 from preprocess import read_syllabified_words, PREPROCESSED_DATA_PATH
 
 
-def build_vocabulary(syllabified_words: List[List[str]]) -> List[str]:
+def build_vocabulary(syllabified_words: List[List[str]], cap_size=10000) \
+        -> List[str]:
     vocab_dict = build_syllable_vocabulary(syllabified_words)
     vocab_size = len(vocab_dict)
-    logging.info(f'Vocabulary size: {vocab_size}')
-    vocabulary = cap_vocabulary(vocab_dict, 10000)
+    logging.info(f'Full vocabulary size: {vocab_size}')
+    if cap_size < vocab_size:
+        logging.info(f'Capping vocabulary to {cap_size} words (+ unknown)')
+
+    # This converts the vocabulary to a list even if it doesn't need capping
+    vocabulary = cap_vocabulary(vocab_dict, cap_size)
 
     return vocabulary
 
@@ -116,7 +121,12 @@ if __name__ == '__main__':
     use_features = ALL_FEATURES
     logging.info(f'Using features: {list(sorted(use_features))}')
 
-    syllabified_words = read_syllabified_words(PREPROCESSED_DATA_PATH)
+    # PREPROCESSED_DATA_PATH or PREPROCESSED_UNIQUE_DATA_PATH
+    data_path = PREPROCESSED_DATA_PATH
+    logging.info(f'Reading data from path: {data_path}')
+    syllabified_words = read_syllabified_words(data_path)
+    logging.info(f'Total number of words (train+test): '
+                 f'{len(syllabified_words)}')
 
     if VOCAB_FEATURE in use_features:
         vocabulary = build_vocabulary(syllabified_words)
@@ -142,7 +152,8 @@ if __name__ == '__main__':
 
     # 5 folds: 80-20 train/test split
     fold_count = 5
-    # Only actually train and evaluate on 2 of them
+    # Only actually train and evaluate on some of them
+    # (saves time when dataset sufficiently large and all folds are similar)
     evaluate_folds = 2
     logging.info(f'K-fold cross-validation with {fold_count} folds, '
                  f'evaluate on {evaluate_folds} of them')
