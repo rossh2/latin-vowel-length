@@ -1,0 +1,148 @@
+Using features: ['((ante)pen)ultimate', '((ante)pen)ultimate + que', '(post)initial', 'adjacent coda type', 'adjacent syllable type', 'coda', 'coda type', 'diphthong', 'even/odd index', 'rhyme', 'syllable type', 'vowel', 'whole syllable (vocab)']
+Reading data from path: ./data/Latin_words_preprocessed_unique.txt
+Total number of words (train+test): 23404
+Full vocabulary size: 1362
+Extracted 1662 features for 1362 syllables in vocabulary
+Classifier type: Perceptron
+Hyperparameters: max_iter=1000
+K-fold cross-validation with 5 folds, evaluate on 3 of them
+Fold # 1
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.80      0.92      0.86     41704
+        long       0.77      0.53      0.63     19988
+
+    accuracy                           0.80     61692
+   macro avg       0.79      0.73      0.74     61692
+weighted avg       0.79      0.80      0.79     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.81      0.92      0.86     10493
+        long       0.76      0.54      0.63      4930
+
+    accuracy                           0.80     15423
+   macro avg       0.78      0.73      0.75     15423
+weighted avg       0.79      0.80      0.79     15423
+
+Fold # 2
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.79      0.93      0.85     41794
+        long       0.76      0.47      0.58     19898
+
+    accuracy                           0.78     61692
+   macro avg       0.77      0.70      0.72     61692
+weighted avg       0.78      0.78      0.76     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.78      0.93      0.85     10403
+        long       0.75      0.46      0.57      5020
+
+    accuracy                           0.77     15423
+   macro avg       0.76      0.69      0.71     15423
+weighted avg       0.77      0.77      0.76     15423
+
+Fold # 3
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.72      0.99      0.84     41832
+        long       0.94      0.20      0.33     19860
+
+    accuracy                           0.74     61692
+   macro avg       0.83      0.60      0.59     61692
+weighted avg       0.79      0.74      0.68     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.72      0.99      0.83     10365
+        long       0.92      0.20      0.33      5058
+
+    accuracy                           0.73     15423
+   macro avg       0.82      0.60      0.58     15423
+weighted avg       0.78      0.73      0.67     15423
+
+Feature importances for most recent train/test split
+Feature ranking:
+1. feature nun (100.000)
+2. feature fir (83.333)
+3. feature nul (83.333)
+4. feature tec (80.000)
+5. feature que (76.667)
+6. feature lap (73.333)
+7. feature CODA=ns (73.333)
+8. feature nup (73.333)
+9. feature thre (70.000)
+10. feature quin (66.667)
+11. feature pres (66.667)
+12. feature rec (66.667)
+13. feature lec (63.333)
+14. feature prin (63.333)
+15. feature stu (60.000)
+16. feature dac (60.000)
+17. feature non (56.667)
+18. feature fos (56.667)
+19. feature frac (56.667)
+20. feature scrip (56.667)
+21. feature fen (56.667)
+22. feature fur (56.667)
+23. feature rur (53.333)
+24. feature crip (53.333)
+25. feature tran (53.333)
+26. feature gres (53.333)
+27. feature nar (50.000)
+28. feature pos (50.000)
+29. feature temp (50.000)
+30. feature scep (50.000)
+31. feature spi (50.000)
+32. feature mal (50.000)
+33. feature clas (50.000)
+34. feature bus (50.000)
+35. feature gla (50.000)
+36. feature vil (46.667)
+37. feature rex (46.667)
+38. feature sco (46.667)
+39. feature ul (46.667)
+40. feature hen (46.667)
+41. feature truc (46.667)
+42. feature VOWEL=ae (46.667)
+43. feature flic (46.667)
+44. feature tro (43.333)
+45. feature nag (43.333)
+46. feature stri (43.333)
+47. feature CODA=nt (43.333)
+48. feature flo (43.333)
+49. feature ny (43.333)
+50. feature nhe (43.333)
+51. feature fic (43.333)
+52. feature mag (43.333)
+53. feature fli (43.333)
+54. feature fac (43.333)
+55. feature hos (43.333)
+56. feature stel (43.333)
+57. feature je (40.000)
+58. feature jec (40.000)
+59. feature gre (40.000)
+60. feature RHYME=ug (40.000)
+61. feature hac (40.000)
+62. feature spo (40.000)
+63. feature CODA=g (40.000)
+64. feature fluc (40.000)
+65. feature bla (40.000)
+66. feature nol (40.000)
+67. feature cinc (40.000)
+68. feature tur (40.000)
+69. feature cras (40.000)
+70. feature pug (40.000)
+71. feature bre (40.000)
+72. feature lus (40.000)
+73. feature fec (40.000)
+74. feature xor (40.000)
+75. feature fron (40.000)

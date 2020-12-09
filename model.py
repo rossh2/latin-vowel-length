@@ -5,7 +5,7 @@ from typing import List, Tuple, Set, Dict
 
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression, Perceptron
 from sklearn.metrics import classification_report
 from sklearn.model_selection import KFold
 from sklearn.tree import DecisionTreeClassifier
@@ -80,12 +80,11 @@ def evaluate(test_data: np.ndarray, test_labels: np.ndarray,
 
 
 def log_feature_importances(classifier, features: List[str]):
-    if isinstance(classifier, LogisticRegression):
-        # log_reg_importances(classifier, features)
+    if isinstance(classifier, LogisticRegression) \
+            or isinstance(classifier, Perceptron):
         importances = abs(classifier.coef_[0])
-    elif isinstance(classifier, RandomForestClassifier) or \
-            isinstance(classifier, DecisionTreeClassifier):
-        # forest_feature_importances(classifier, features)
+    elif isinstance(classifier, RandomForestClassifier) \
+            or isinstance(classifier, DecisionTreeClassifier):
         importances = classifier.feature_importances_
     else:
         logging.warning('Unsupported classifier for feature ranking')
@@ -138,6 +137,7 @@ if __name__ == '__main__':
 
     classifier = RandomForestClassifier(min_samples_split=2, max_features=5,
                                         n_estimators=75)
+    # classifier = Perceptron(max_iter=1000)
     logging.info(f'Classifier type: {classifier.__class__.__name__}')
     logging.info(f'Hyperparameters: min_samples_split=2, max_features=5, '
                  f'n_estimators=75')

@@ -1,0 +1,147 @@
+Using features: ['((ante)pen)ultimate', '((ante)pen)ultimate + que', '(post)initial', 'adjacent coda type', 'adjacent syllable type', 'coda', 'coda type', 'diphthong', 'even/odd index', 'syllable type', 'vowel']
+Reading data from path: ./data/Latin_words_preprocessed_unique.txt
+Total number of words (train+test): 23404
+Extracted 131 features for 1 syllables in vocabulary
+Classifier type: Perceptron
+Hyperparameters: max_iter=1000
+K-fold cross-validation with 5 folds, evaluate on 3 of them
+Fold # 1
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.74      0.94      0.83     41814
+        long       0.70      0.31      0.43     19878
+
+    accuracy                           0.74     61692
+   macro avg       0.72      0.62      0.63     61692
+weighted avg       0.73      0.74      0.70     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.73      0.93      0.82     10383
+        long       0.69      0.30      0.42      5040
+
+    accuracy                           0.73     15423
+   macro avg       0.71      0.62      0.62     15423
+weighted avg       0.72      0.73      0.69     15423
+
+Fold # 2
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.85      0.50      0.63     41802
+        long       0.44      0.82      0.57     19890
+
+    accuracy                           0.60     61692
+   macro avg       0.65      0.66      0.60     61692
+weighted avg       0.72      0.60      0.61     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.86      0.50      0.63     10395
+        long       0.45      0.83      0.58      5028
+
+    accuracy                           0.61     15423
+   macro avg       0.65      0.67      0.61     15423
+weighted avg       0.72      0.61      0.62     15423
+
+Fold # 3
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.71      0.97      0.82     41658
+        long       0.74      0.20      0.31     20034
+
+    accuracy                           0.72     61692
+   macro avg       0.73      0.58      0.57     61692
+weighted avg       0.72      0.72      0.66     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.72      0.97      0.83     10539
+        long       0.73      0.19      0.30      4884
+
+    accuracy                           0.72     15423
+   macro avg       0.73      0.58      0.56     15423
+weighted avg       0.72      0.72      0.66     15423
+
+Feature importances for most recent train/test split
+Feature ranking:
+1. feature CODA=ns (100.000)
+2. feature VOWEL=ae (70.833)
+3. feature VOWEL=ie (66.667)
+4. feature CODA=nt (62.500)
+5. feature CODA=nc (58.333)
+6. feature VOWEL=au (45.833)
+7. feature VOWEL=ui (45.833)
+8. feature CODA=s (45.833)
+9. feature DIPHTHONG (41.667)
+10. feature CODA=d (41.667)
+11. feature CODA=m (41.667)
+12. feature CODA=g (37.500)
+13. feature CODA=nx (37.500)
+14. feature CODA=rs (37.500)
+15. feature POST_TYPE=VV (33.333)
+16. feature CODA=mp (33.333)
+17. feature VOWEL=oe (33.333)
+18. feature CODA=t (33.333)
+19. feature CODA=sq (29.167)
+20. feature TYPE=VC* (29.167)
+21. feature TYPE=CLVV (29.167)
+22. feature POST_TYPE=VC* (29.167)
+23. feature POST_TYPE=CVC* (29.167)
+24. feature ANTEPENULT+QUE (25.000)
+25. feature VOWEL=y (25.000)
+26. feature CODA=q (25.000)
+27. feature POST_TYPE=VC (20.833)
+28. feature CODA=ps (20.833)
+29. feature CODA=c (20.833)
+30. feature TYPE=CLVC* (20.833)
+31. feature TYPE=CLVVC (16.667)
+32. feature CODA=ms (16.667)
+33. feature POST_TYPE=CV (16.667)
+34. feature CODA=bs (16.667)
+35. feature TYPE=VC (16.667)
+36. feature ULT (16.667)
+37. feature CODA=f (16.667)
+38. feature CODA=b (16.667)
+39. feature POST_CODA_TYPE=C* (16.667)
+40. feature CODA=mst (16.667)
+41. feature TYPE=C*V (16.667)
+42. feature PRE_CODA_TYPE=C* (16.667)
+43. feature POST_TYPE=CVV (16.667)
+44. feature PRE_TYPE=C*VV (16.667)
+45. feature POST_TYPE=CVC (16.667)
+46. feature CODA=st (16.667)
+47. feature TYPE=VV (16.667)
+48. feature CODA=rt (16.667)
+49. feature CODA=p (12.500)
+50. feature VOWEL=e (12.500)
+51. feature CODA_TYPE=C (12.500)
+52. feature TYPE=C*VC (12.500)
+53. feature EVEN (12.500)
+54. feature ULT+QUE (12.500)
+55. feature PRE_TYPE=VVC (12.500)
+56. feature TYPE=CLVC (12.500)
+57. feature CODA=xs (12.500)
+58. feature VOWEL=a (12.500)
+59. feature PRE_TYPE=CV (12.500)
+60. feature VOWEL=u (12.500)
+61. feature POST_TYPE=V (12.500)
+62. feature PRE_TYPE=CLVV (12.500)
+63. feature PENULT (12.500)
+64. feature POST_CODA_TYPE=C (12.500)
+65. feature CODA=x (12.500)
+66. feature CODA=ng (8.333)
+67. feature PRE_TYPE=C*VC (8.333)
+68. feature POST_TYPE=CLVC* (8.333)
+69. feature PRE_TYPE=CLVVC* (8.333)
+70. feature CODA=mq (8.333)
+71. feature POST_TYPE=CLVVC* (8.333)
+72. feature PRE_TYPE=CVV (8.333)
+73. feature VOWEL=i (8.333)
+74. feature CODA=ct (8.333)
+75. feature PRE_TYPE=VV (8.333)
