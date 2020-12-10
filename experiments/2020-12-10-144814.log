@@ -1,0 +1,148 @@
+Reading data from path: ./data/Latin_words_preprocessed_unique.txt
+Total number of words (train+test): 23404
+Using features: ((ante)pen)ultimate, ((ante)pen)ultimate + que, (post)initial, VCC, adjacent coda type, adjacent rhyme, adjacent syllable type, coda, coda type, diphthong, even/odd index, rhyme, syllable type, vowel, whole syllable (vocab)
+Full vocabulary size: 1362
+Extracted 1897 features for 1362 syllables in vocabulary
+Classifier type: RandomForestClassifier
+Hyperparameters: min_samples_leaf=5, n_estimators=75
+K-fold cross-validation with 5 folds, evaluate on 3 of them
+Fold # 1
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.95      0.97      0.96     41748
+        long       0.94      0.90      0.92     19942
+
+    accuracy                           0.95     61690
+   macro avg       0.94      0.93      0.94     61690
+weighted avg       0.95      0.95      0.95     61690
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.91      0.94      0.92     10449
+        long       0.86      0.80      0.83      4976
+
+    accuracy                           0.89     15425
+   macro avg       0.89      0.87      0.88     15425
+weighted avg       0.89      0.89      0.89     15425
+
+Fold # 2
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.95      0.97      0.96     41746
+        long       0.94      0.89      0.92     19944
+
+    accuracy                           0.95     61690
+   macro avg       0.94      0.93      0.94     61690
+weighted avg       0.95      0.95      0.95     61690
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.91      0.94      0.92     10451
+        long       0.86      0.80      0.83      4974
+
+    accuracy                           0.89     15425
+   macro avg       0.89      0.87      0.88     15425
+weighted avg       0.89      0.89      0.89     15425
+
+Fold # 3
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.95      0.97      0.96     41683
+        long       0.94      0.89      0.92     20010
+
+    accuracy                           0.95     61693
+   macro avg       0.94      0.93      0.94     61693
+weighted avg       0.95      0.95      0.95     61693
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.91      0.94      0.93     10514
+        long       0.86      0.81      0.83      4908
+
+    accuracy                           0.90     15422
+   macro avg       0.89      0.87      0.88     15422
+weighted avg       0.90      0.90      0.90     15422
+
+Feature importances for most recent train/test split
+Feature ranking:
+1. feature ULT (100.000)
+2. feature PENULT (92.383)
+3. feature DIPHTHONG (64.140)
+4. feature CODA=s (61.638)
+5. feature CODA_TYPE=C (60.859)
+6. feature ANTEPENULT (60.404)
+7. feature NO_CODA (57.292)
+8. feature INIT (53.389)
+9. feature NO_POST_CODA (50.273)
+10. feature POST_TYPE=CV (48.595)
+11. feature VOWEL=i (47.930)
+12. feature RHYME=a (45.911)
+13. feature VCC (44.518)
+14. feature RHYME=ae (42.920)
+15. feature VOWEL=e (41.245)
+16. feature POST_TYPE=V (39.595)
+17. feature VOWEL=o (39.402)
+18. feature POST_CODA_TYPE=C (38.946)
+19. feature POSTINIT (37.982)
+20. feature PRE_TYPE=CV (37.812)
+21. feature VOWEL=u (37.274)
+22. feature VOWEL=a (36.720)
+23. feature POST_TYPE=CVC (36.571)
+24. feature POST_RHYME=i (36.431)
+25. feature TYPE=CV (36.295)
+26. feature NO_PRE_CODA (36.029)
+27. feature TYPE=CVC (35.326)
+28. feature de (35.136)
+29. feature RHYME=i (33.066)
+30. feature POST_RHYME=e (31.893)
+31. feature POST_TYPE=VC (31.818)
+32. feature POST_RHYME=a (30.713)
+33. feature RHYME=e (30.188)
+34. feature RHYME=o (29.679)
+35. feature RHYME=as (28.484)
+36. feature PRE_RHYME=i (27.627)
+37. feature CODA=ns (27.361)
+38. feature ODD (25.602)
+39. feature EVEN (25.021)
+40. feature TYPE=CVV (23.713)
+41. feature PRE_RHYME=e (23.708)
+42. feature CODA=t (23.523)
+43. feature CODA=m (22.692)
+44. feature TYPE=V (22.215)
+45. feature RHYME=os (21.752)
+46. feature CODA=r (21.606)
+47. feature TYPE=CLV (20.696)
+48. feature que (19.951)
+49. feature PRE_CODA_TYPE=C (19.923)
+50. feature RHYME=es (19.202)
+51. feature re (18.798)
+52. feature PRE_RHYME=a (18.366)
+53. feature PRE_TYPE=CVC (18.066)
+54. feature POST_RHYME=o (17.639)
+55. feature PRE_RHYME=u (17.358)
+56. feature POST_TYPE=CLV (17.109)
+57. feature POST_RHYME=is (17.108)
+58. feature RHYME=is (16.929)
+59. feature PRE_RHYME=o (16.914)
+60. feature ULT+QUE (16.691)
+61. feature POST_RHYME=u (16.143)
+62. feature POST_RHYME=us (15.339)
+63. feature POST_RHYME=ur (14.098)
+64. feature PRE_TYPE=V (14.097)
+65. feature POST_RHYME=um (13.059)
+66. feature RHYME=um (12.761)
+67. feature ta (12.513)
+68. feature RHYME=us (12.448)
+69. feature CODA=nt (11.467)
+70. feature TYPE=VC (11.263)
+71. feature PRE_TYPE=CLV (11.166)
+72. feature na (11.014)
+73. feature pe (10.917)
+74. feature POST_RHYME=en (10.721)
+75. feature POST_RHYME=unt (10.618)
