@@ -14,8 +14,7 @@ from sklearn.tree import DecisionTreeClassifier, export_graphviz
 
 from features import build_syllable_vocabulary, cap_vocabulary, \
     extract_features, is_long_syllable, VOCAB_FEATURE, \
-    UNK_VOCABULARY, ALL_FEATURES, TYPE_ONLY_FEATURES, RHYME_AND_TYPE_FEATURES, \
-    RHYME_AND_CODA_TYPE_FEATURES, CODA_TYPE_ONLY_FEATURES
+    UNK_VOCABULARY, CODA_TYPE_ONLY_FEATURES
 from preprocess import read_syllabified_words, PREPROCESSED_UNIQUE_DATA_PATH
 
 LABEL_NAMES = ['short', 'long']
@@ -52,7 +51,7 @@ def assemble_data(syllabified_words: List[List[str]], vocabulary: List[str],
 
     feature_count = len(features)
     logger.info(f'Extracted {feature_count} features '
-                 f'for {len(vocabulary)} syllables in vocabulary')
+                f'for {len(vocabulary)} syllables in vocabulary')
 
     return featurized_syllables, label_list, list(features)
 
@@ -84,7 +83,7 @@ def evaluate(test_data: np.ndarray, test_labels: np.ndarray,
     else:
         predicted_labels = classifier.predict(test_data)
     logger.info(classification_report(test_labels, predicted_labels,
-                                       target_names=LABEL_NAMES))
+                                      target_names=LABEL_NAMES))
 
 
 def log_feature_importances(classifier: ClassifierMixin, features: List[str]):
@@ -103,10 +102,10 @@ def log_feature_importances(classifier: ClassifierMixin, features: List[str]):
     logger.info("Feature ranking:")
     for f in range(min(25, len(features))):
         logger.info(f'{f + 1}. feature {features[indices[f]]} '
-                     f'({importances[indices[f]]:.3f})')
+                    f'({importances[indices[f]]:.3f})')
     for f in range(25, min(75, len(features))):
         logger.debug(f'{f + 1}. feature {features[indices[f]]} '
-                      f'({importances[indices[f]]:.3f})')
+                     f'({importances[indices[f]]:.3f})')
 
 
 def plot_fitted_tree(classifier: ClassifierMixin, features: List[str],
@@ -149,7 +148,7 @@ def prepare_data(use_features: Set[str], data_path: str) \
     logger.info(f'Reading data from path: {data_path}')
     syllabified_words = read_syllabified_words(data_path)
     logger.info(f'Total number of words (train+test): '
-                 f'{len(syllabified_words)}')
+                f'{len(syllabified_words)}')
 
     feature_string = ', '.join(sorted(use_features))
     logger.info(f'Using features: {feature_string}')
@@ -179,7 +178,7 @@ def kfold_train_evaluate(classifier, data: np.ndarray,
                          word_lengths: List[int], features: List[str],
                          fold_count: int, evaluate_folds: int):
     logger.info(f'K-fold cross-validation with {fold_count} folds, '
-                 f'evaluate on {evaluate_folds} of them')
+                f'evaluate on {evaluate_folds} of them')
 
     folds = list(
         SequenceKFold(word_lengths, n_folds=fold_count, shuffle=True)
@@ -218,9 +217,9 @@ if __name__ == '__main__':
 
     # classifier = RandomForestClassifier(min_samples_split=5, max_features=5,
     #                                     n_estimators=50)
-    classifier = DecisionTreeClassifier(min_samples_leaf=5, max_features=5)
+    classifier = DecisionTreeClassifier(min_samples_leaf=5, max_depth=8)
     logger.info(f'Classifier type: {classifier.__class__.__name__}')
-    logger.info(f'Hyperparameters: min_samples_leaf=5, max_features=5')
+    logger.info(f'Hyperparameters: min_samples_leaf=5, max_depth=8')
 
     # 5 folds: 80-20 train/test split
     fold_count = 5

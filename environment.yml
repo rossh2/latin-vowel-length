@@ -8,6 +8,7 @@ dependencies:
   - cycler=0.10.0=py38_0
   - cython=0.29.21=py38hd77b12b_0
   - freetype=2.10.4=hd328e21_0
+  - graphviz=2.38=hfd603c8_2
   - icc_rt=2019.0.0=h0cc432a_1
   - icu=58.2=ha925a31_3
   - intel-openmp=2020.2=254
@@ -34,6 +35,7 @@ dependencies:
   - python=3.8.5=h5fd99cc_1
   - python-crfsuite=0.9.6=py38ha925a31_0
   - python-dateutil=2.8.1=py_0
+  - python-graphviz=0.15=pyhd3eb1b0_0
   - qt=5.9.7=vc14h73c81de_0
   - scikit-learn=0.23.2=py38h47e9c7a_0
   - scipy=1.5.2=py38h14eb087_0
