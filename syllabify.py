@@ -2,20 +2,20 @@ import re
 from typing import List
 
 CONSONANTS = 'bcdfghjlmnpqrstvxz'
+DOUBLE_CONSONANTS = 'xz'
 
 # Muta cum liquida
 STOPS_FRICATIVES = 'bcdfgpst'
 APPROX = 'lr'  # v is an approximant ([w]) but does not do muta cum liquida
 ONSET_CLUSTERS = [muta + liquida
                   for muta in STOPS_FRICATIVES for liquida in APPROX]
-DOUBLE_CONSONANTS = 'xz'
 
 VOWELS = 'aeiouy'
 DIPHTHONGS = ['ae', 'au', 'oe']  # + ['ei', 'eu']
 MACRON = '-'
 diphthong_exceptions = {
-    'huius': ['hui', 'ius'],
-    'cuius': ['cui', 'ius'],
+    'huius': ['hui', 'jus'],
+    'cuius': ['cui', 'jus'],
     'huic': ['huic'],
     'cui': ['cui'],
     'hui': ['hui']
@@ -154,10 +154,12 @@ def syllabify(word: str) -> List[str]:
 
 def identify_syllable_type(syllable: str) -> str:
     syllable = syllable.replace('h', '')
-    if syllable[0] in VOWELS:
+    if syllable[0] in VOWELS \
+            and not (syllable[0] == 'i'
+                     and len(syllable) > 1 and syllable[1] in VOWELS):
         return identify_syllable_type_V(syllable)
     else:
-        # Syllable starts with consonant
+        # Syllable starts with consonant or consonantal i
         if len(syllable) == 1:
             raise ValueError(
                 f'Invalid syllable structure "C" for syllable {syllable}')
@@ -271,7 +273,8 @@ def identify_syllable_type_Cstar(syllable: str) -> str:
             return 'C*VVC*'
     else:
         raise ValueError(
-            f'Invalid nucleus "VVV" or non-adjacent Vs for syllable {syllable}')
+            f'Invalid nucleus "VVV" or non-adjacent Vs '
+            f'for syllable {syllable}')
 
 
 def get_coda_type(syllable_type: str) -> str:
@@ -294,7 +297,11 @@ def extract_vowels(syllable: str) -> str:
     match = VOWEL_REGEX.search(syllable)
     if not match:
         raise ValueError(f'Invalid syllable {syllable} contains no vowels')
-    return match.group(2)
+    vowels = match.group(2)
+    if len(vowels) > 1 and vowels[0] == 'i':
+        # Consonantal i
+        vowels = vowels[1:]
+    return vowels
 
 
 def extract_coda(syllable: str) -> str:

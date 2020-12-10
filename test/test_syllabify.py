@@ -239,7 +239,7 @@ class TestSyllabify(TestCase):
     def test_huius(self):
         word = 'huius'
         syllables = syllabify(word)
-        self.assertEqual(['hui', 'ius'], syllables)
+        self.assertEqual(['hui', 'jus'], syllables)
 
     def test_cui(self):
         word = 'cui'
@@ -247,7 +247,6 @@ class TestSyllabify(TestCase):
         self.assertEqual(['cui'], syllables)
 
     # Macrons (n.B. not all these examples are realistic for vowel length)
-    # TODO replace with real Latin words where possible
     def test_vm(self):
         word = 'a-'
         syllables = syllabify(word)
@@ -295,6 +294,12 @@ class TestIdentifySyllableType(TestCase):
         syl_type = identify_syllable_type(syllable)
         self.assertEqual('V', syl_type)
 
+    def test_i(self):
+        # Make sure not consonantal i
+        syllable = 'i'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('V', syl_type)
+
     def test_vv(self):
         syllable = 'ei'
         syl_type = identify_syllable_type(syllable)
@@ -302,6 +307,12 @@ class TestIdentifySyllableType(TestCase):
 
     def test_cv(self):
         syllable = 'de'
+        syl_type = identify_syllable_type(syllable)
+        self.assertEqual('CV', syl_type)
+
+    def test_iv(self):
+        # Consonantal i, as in iacere
+        syllable = 'ia'
         syl_type = identify_syllable_type(syllable)
         self.assertEqual('CV', syl_type)
 

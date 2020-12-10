@@ -17,7 +17,6 @@ CODA_FEATURE = 'coda'
 RHYME_FEATURE = 'rhyme'
 DIPHTHONG_FEATURE = 'diphthong'
 VCC_FEATURE = 'VCC'
-CONSONANTAL_I_FEATURE = 'consonantal \'i\''
 POSTINIT_FEATURE = '(post)initial'
 ANTEPEN_FEATURE = '((ante)pen)ultimate'
 QUE_FEATURE = '((ante)pen)ultimate + que'
@@ -28,31 +27,31 @@ ALL_FEATURES = frozenset({
     SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
     VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE, VCC_FEATURE,
     POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
-    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE, CONSONANTAL_I_FEATURE
+    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE
 })
 RHYME_AND_TYPE_FEATURES = frozenset({
     SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
     VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE, VCC_FEATURE,
     POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
-    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE, CONSONANTAL_I_FEATURE
+    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE
 })
 RHYME_AND_CODA_TYPE_FEATURES = frozenset({
     DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
     VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE, VCC_FEATURE,
     POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
-    ADJ_CODA_TYPE_FEATURE, CONSONANTAL_I_FEATURE
+    ADJ_CODA_TYPE_FEATURE
 })
 TYPE_ONLY_FEATURES = frozenset({
     SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
     VOWEL_FEATURE, CODA_FEATURE, VCC_FEATURE,
     POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
-    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE, CONSONANTAL_I_FEATURE
+    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE
 })
 CODA_TYPE_ONLY_FEATURES = frozenset({
     DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
     VOWEL_FEATURE, CODA_FEATURE, VCC_FEATURE,
     POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
-    ADJ_CODA_TYPE_FEATURE, CONSONANTAL_I_FEATURE
+    ADJ_CODA_TYPE_FEATURE
 })
 
 
@@ -176,18 +175,6 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
             if syl_type.endswith('C*') or (syl_type.endswith('C')
                                            and post_syl_type.startswith('CV')):
                 feature_dict['VCC'] = 1.0
-
-        if CONSONANTAL_I_FEATURE in use_features:
-            if syllable_types[i].startswith('V') \
-                    and i != 0 and syllables[i - 1] == 'i':
-                # Guess that 'i' in previous syllable might actually be
-                # consonantal i (i.e. the onset of this syllable)
-                feature_dict['PRE_I'] = 1.0
-            if 'i' not in syllables[i] \
-                    and i != ult_i and syllables[i + 1] == 'i':
-                # Guess that the 'i' in the next syllable might actually be
-                # consonantal i, making this syllable short
-                feature_dict['POST_I'] = 1.0
 
         if POSTINIT_FEATURE in use_features:
             if i == 0:
