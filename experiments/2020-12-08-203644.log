@@ -74,7 +74,7 @@ Feature ranking:
 48. feature o (7.869)
 49. feature PRE_TYPE=CLV (7.709)
 50. feature ULT+QUE (7.565)
-51. feature POST_TYPE=CVC* (7.512)
+51. feature POST_TYPE=CVC+ (7.512)
 52. feature non (7.426)
 53. feature ta (7.088)
 54. feature pe (6.852)

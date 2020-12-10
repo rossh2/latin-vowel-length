@@ -172,7 +172,7 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
             # of this and the following syllable
             syl_type = syllable_types[i]
             post_syl_type = syllable_types[i + 1] if i != ult_i else ''
-            if syl_type.endswith('C*') or (syl_type.endswith('C')
+            if syl_type.endswith('C+') or (syl_type.endswith('C')
                                            and post_syl_type.startswith('CV')):
                 feature_dict['VCC'] = 1.0
 

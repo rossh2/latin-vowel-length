@@ -96,7 +96,7 @@ Feature ranking:
 68. feature bi (7.863)
 69. feature ro (7.809)
 70. feature RHYME=on (7.502)
-71. feature CODA_TYPE=C* (6.633)
+71. feature CODA_TYPE=C+ (6.633)
 72. feature RHYME=am (6.514)
 73. feature i (6.417)
 74. feature si (6.320)

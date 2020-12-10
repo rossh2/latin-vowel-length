@@ -134,7 +134,7 @@ Feature ranking:
 61. feature no (5.585)
 62. feature VOWEL=au (5.517)
 63. feature as (5.371)
-64. feature POST_CODA_TYPE=C* (5.311)
+64. feature POST_CODA_TYPE=C+ (5.311)
 65. feature ros (5.261)
 66. feature ce (5.106)
 67. feature tis (4.861)

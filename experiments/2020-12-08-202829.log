@@ -74,7 +74,7 @@ Feature ranking:
 48. feature o (8.279)
 49. feature RHYME=um (8.271)
 50. feature CODA=ns (8.246)
-51. feature POST_TYPE=CVC* (7.838)
+51. feature POST_TYPE=CVC+ (7.838)
 52. feature VOWEL=au (7.604)
 53. feature ULT+QUE (7.364)
 54. feature tu (6.918)

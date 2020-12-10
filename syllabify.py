@@ -23,14 +23,14 @@ diphthong_exceptions = {
 
 VOWEL_REGEX = re.compile(f'(qu)*([{VOWELS}]+)')
 
-# Use C* for two or more consonants. Use CL for muta cum liquida (L as liquid)
+# Use C+ for two or more consonants. Use CL for muta cum liquida (L as liquid)
 # VV for diphthongs
 # These are the types returned by identify_syllable_type
 SYLLABLE_TYPES = ['V', 'VV',
-                  'CV', 'CLV', 'C*V', 'CVV', 'CLVV', 'C*VV',
-                  'VC', 'VC*', 'VVC', 'VVC*',
-                  'CVC', 'CLVC', 'C*VC', 'CVVC', 'CLVVC', 'C*VVC',
-                  'CVC*', 'CLVC*', 'C*VC*', 'CVVC*', 'CLVVC*', 'C*VVC*']
+                  'CV', 'CLV', 'C+V', 'CVV', 'CLVV', 'C+VV',
+                  'VC', 'VC+', 'VVC', 'VVC+',
+                  'CVC', 'CLVC', 'C+VC', 'CVVC', 'CLVVC', 'C+VVC',
+                  'CVC+', 'CLVC+', 'C+VC+', 'CVVC+', 'CLVVC+', 'C+VVC+']
 
 
 def syllabify(word: str) -> List[str]:
@@ -174,8 +174,8 @@ def identify_syllable_type(syllable: str) -> str:
                 # CL...
                 return identify_syllable_type_CL(syllable)
             else:
-                # C*...
-                return identify_syllable_type_Cstar(syllable)
+                # C+...
+                return identify_syllable_type_Cplus(syllable)
 
 
 def identify_syllable_type_V(syllable: str) -> str:
@@ -189,14 +189,14 @@ def identify_syllable_type_V(syllable: str) -> str:
         elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'VVC'
         else:
-            return 'VVC*'
+            return 'VVC+'
     else:
         # VC...
         coda = syllable[1:]
         if len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'VC'
         else:
-            return 'VC*'
+            return 'VC+'
 
 
 def identify_syllable_type_CV(syllable: str) -> str:
@@ -210,7 +210,7 @@ def identify_syllable_type_CV(syllable: str) -> str:
         elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'CVVC'
         else:
-            return 'CVVC*'
+            return 'CVVC+'
     else:
         # CV(C)...
         coda = syllable[3:] if syllable[:2] == 'qu' else syllable[2:]
@@ -219,7 +219,7 @@ def identify_syllable_type_CV(syllable: str) -> str:
         elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'CVC'
         else:
-            return 'CVC*'
+            return 'CVC+'
 
 
 def identify_syllable_type_CL(syllable: str) -> str:
@@ -236,7 +236,7 @@ def identify_syllable_type_CL(syllable: str) -> str:
         elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'CLVVC'
         else:
-            return 'CLVVC*'
+            return 'CLVVC+'
     else:
         # CLV(C)...
         coda = syllable[3:]
@@ -245,32 +245,32 @@ def identify_syllable_type_CL(syllable: str) -> str:
         elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
             return 'CLVC'
         else:
-            return 'CLVC*'
+            return 'CLVC+'
 
 
-def identify_syllable_type_Cstar(syllable: str) -> str:
+def identify_syllable_type_Cplus(syllable: str) -> str:
     vowel_indices = [i for i, s in enumerate(syllable)
                      if s in VOWELS]
     if len(vowel_indices) == 0:
         raise ValueError(
-            f'Invalid syllable structure: C* for syllable {syllable}')
+            f'Invalid syllable structure: C+ for syllable {syllable}')
     coda = syllable[(vowel_indices[-1] + 1):]
     if len(vowel_indices) == 1:
-        # C*V(C)...
+        # C+V(C)...
         if len(coda) == 0:
-            return 'C*V'
+            return 'C+V'
         if len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
-            return 'C*VC'
+            return 'C+VC'
         else:
-            return 'C*VC*'
+            return 'C+VC+'
     elif len(vowel_indices) == 2 and vowel_indices[0] + 1 == vowel_indices[1]:
-        # C*VV(C)...
+        # C+VV(C)...
         if len(coda) == 0:
-            return 'C*VV'
+            return 'C+VV'
         elif len(coda) == 1 and coda not in DOUBLE_CONSONANTS:
-            return 'C*VVC'
+            return 'C+VVC'
         else:
-            return 'C*VVC*'
+            return 'C+VVC+'
     else:
         raise ValueError(
             f'Invalid nucleus "VVV" or non-adjacent Vs '
@@ -278,8 +278,8 @@ def identify_syllable_type_Cstar(syllable: str) -> str:
 
 
 def get_coda_type(syllable_type: str) -> str:
-    if syllable_type.endswith('C*'):
-        return 'C*'
+    if syllable_type.endswith('C+'):
+        return 'C+'
     elif syllable_type.endswith('C'):
         return 'C'
     else:
