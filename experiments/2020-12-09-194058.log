@@ -1,0 +1,143 @@
+Reading data from path: ./data/Latin_words_preprocessed_unique.txt
+Total number of words (train+test): 23404
+Using features: ((ante)pen)ultimate, ((ante)pen)ultimate + que, (post)initial, VCC, adjacent coda type, coda, coda type, consonantal 'i', diphthong, even/odd index, vowel
+Extracted 71 features for 1 syllables in vocabulary
+Classifier type: DecisionTreeClassifier
+Hyperparameters: min_samples_leaf=5, max_features=5
+K-fold cross-validation with 5 folds, evaluate on 3 of them
+Fold # 1
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.82      0.95      0.88     41843
+        long       0.84      0.56      0.67     19845
+
+    accuracy                           0.82     61688
+   macro avg       0.83      0.75      0.77     61688
+weighted avg       0.83      0.82      0.81     61688
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.81      0.95      0.88     10354
+        long       0.85      0.55      0.67      5073
+
+    accuracy                           0.82     15427
+   macro avg       0.83      0.75      0.77     15427
+weighted avg       0.83      0.82      0.81     15427
+
+Fold # 2
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.82      0.93      0.87     41673
+        long       0.80      0.59      0.68     20020
+
+    accuracy                           0.82     61693
+   macro avg       0.81      0.76      0.78     61693
+weighted avg       0.82      0.82      0.81     61693
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.83      0.93      0.88     10524
+        long       0.80      0.58      0.67      4898
+
+    accuracy                           0.82     15422
+   macro avg       0.81      0.76      0.77     15422
+weighted avg       0.82      0.82      0.81     15422
+
+Fold # 3
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.81      0.96      0.88     41711
+        long       0.86      0.55      0.67     19982
+
+    accuracy                           0.82     61693
+   macro avg       0.84      0.75      0.77     61693
+weighted avg       0.83      0.82      0.81     61693
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.82      0.95      0.88     10486
+        long       0.85      0.55      0.66      4936
+
+    accuracy                           0.82     15422
+   macro avg       0.83      0.75      0.77     15422
+weighted avg       0.83      0.82      0.81     15422
+
+Feature importances for most recent train/test split
+Feature ranking:
+1. feature CODA=s (100.000)
+2. feature VOWEL=i (65.932)
+3. feature ULT (47.329)
+4. feature NO_CODA (44.475)
+5. feature VOWEL=e (42.957)
+6. feature DIPHTHONG (39.866)
+7. feature INIT (32.719)
+8. feature PENULT (29.900)
+9. feature VOWEL=a (26.072)
+10. feature VOWEL=u (23.356)
+11. feature CODA_TYPE=C (17.976)
+12. feature CODA=ns (17.200)
+13. feature POST_CODA_TYPE=C (16.758)
+14. feature ULT+QUE (11.420)
+15. feature CODA=nt (7.390)
+16. feature VOWEL=o (7.156)
+17. feature NO_POST_CODA (7.103)
+18. feature POSTINIT (6.875)
+19. feature NO_PRE_CODA (5.245)
+20. feature CODA=n (4.740)
+21. feature POST_CODA_TYPE=C* (4.606)
+22. feature PRE_CODA_TYPE=C (4.107)
+23. feature ANTEPENULT (3.781)
+24. feature VCC (3.283)
+25. feature CODA=m (1.910)
+26. feature ODD (1.782)
+27. feature CODA=c (1.458)
+28. feature VOWEL=y (0.928)
+29. feature CODA=mp (0.921)
+30. feature EVEN (0.853)
+31. feature CODA=r (0.695)
+32. feature PRE_CODA_TYPE=C* (0.640)
+33. feature CODA=l (0.540)
+34. feature CODA=g (0.504)
+35. feature POST_I (0.429)
+36. feature CODA=d (0.423)
+37. feature CODA=nc (0.374)
+38. feature CODA=t (0.236)
+39. feature CODA=f (0.198)
+40. feature CODA=b (0.190)
+41. feature CODA=bs (0.164)
+42. feature ANTEPENULT+QUE (0.111)
+43. feature CODA=p (0.064)
+44. feature CODA=x (0.062)
+45. feature CODA_TYPE=C* (0.060)
+46. feature CODA=j (0.007)
+47. feature CODA=ds (0.000)
+48. feature CODA=q (0.000)
+49. feature CODA=dg (0.000)
+50. feature CODA=mq (0.000)
+51. feature CODA=lc (0.000)
+52. feature CODA=ct (0.000)
+53. feature CODA=rps (0.000)
+54. feature CODA=xs (0.000)
+55. feature PENULT+QUE (0.000)
+56. feature CODA=mst (0.000)
+57. feature CODA=rbs (0.000)
+58. feature CODA=ng (0.000)
+59. feature CODA=lp (0.000)
+60. feature CODA=rx (0.000)
+61. feature CODA=rc (0.000)
+62. feature CODA=rt (0.000)
+63. feature CODA=cc (0.000)
+64. feature CODA=st (0.000)
+65. feature CODA=sq (0.000)
+66. feature CODA=ms (0.000)
+67. feature CODA=lt (0.000)
+68. feature CODA=rs (0.000)
+69. feature CODA=rp (0.000)
+70. feature CODA=nx (0.000)
+71. feature CODA=ps (0.000)

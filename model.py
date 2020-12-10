@@ -14,7 +14,8 @@ from sklearn.tree import DecisionTreeClassifier, export_graphviz
 
 from features import build_syllable_vocabulary, cap_vocabulary, \
     extract_features, is_long_syllable, VOCAB_FEATURE, \
-    UNK_VOCABULARY, ALL_FEATURES, TYPE_ONLY_FEATURES
+    UNK_VOCABULARY, ALL_FEATURES, TYPE_ONLY_FEATURES, RHYME_AND_TYPE_FEATURES, \
+    RHYME_AND_CODA_TYPE_FEATURES, CODA_TYPE_ONLY_FEATURES
 from preprocess import read_syllabified_words, PREPROCESSED_UNIQUE_DATA_PATH
 
 LABEL_NAMES = ['short', 'long']
@@ -118,7 +119,7 @@ def plot_fitted_tree(classifier: ClassifierMixin, features: List[str],
         logger.debug('Plotting this classifier is not supported.')
         return
 
-    max_depth = 10
+    max_depth = 8
     dot_data = export_graphviz(tree_classifier, out_file=None,
                                max_depth=max_depth, feature_names=features,
                                class_names=LABEL_NAMES, filled=True)
@@ -211,13 +212,15 @@ if __name__ == '__main__':
 
     # PREPROCESSED_DATA_PATH or PREPROCESSED_UNIQUE_DATA_PATH
     data_path = PREPROCESSED_UNIQUE_DATA_PATH
-    use_features = TYPE_ONLY_FEATURES
+    use_features = CODA_TYPE_ONLY_FEATURES
     data, labels, word_lengths, features = prepare_data(use_features,
                                                         data_path)
 
-    classifier = DecisionTreeClassifier(min_samples_split=5, max_features=5)
+    # classifier = RandomForestClassifier(min_samples_split=5, max_features=5,
+    #                                     n_estimators=50)
+    classifier = DecisionTreeClassifier(min_samples_leaf=5, max_features=5)
     logger.info(f'Classifier type: {classifier.__class__.__name__}')
-    logger.info(f'Hyperparameters: min_samples_split=5, max_features=5')
+    logger.info(f'Hyperparameters: min_samples_leaf=5, max_features=5')
 
     # 5 folds: 80-20 train/test split
     fold_count = 5

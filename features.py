@@ -7,7 +7,7 @@ from syllabify import identify_syllable_type, is_diphthong, extract_vowels, \
 UNK = 'UNK'
 UNK_VOCABULARY = [UNK]
 
-VOCAB_FEATURE = 'whole syllable (vocab)' # formerly known as 'vocab'
+VOCAB_FEATURE = 'whole syllable (vocab)'  # formerly known as 'vocab'
 SYLLABLE_TYPE_FEATURE = 'syllable type'
 ADJ_TYPE_FEATURE = 'adjacent syllable type'
 CODA_TYPE_FEATURE = 'coda type'
@@ -16,6 +16,8 @@ VOWEL_FEATURE = 'vowel'
 CODA_FEATURE = 'coda'
 RHYME_FEATURE = 'rhyme'
 DIPHTHONG_FEATURE = 'diphthong'
+VCC_FEATURE = 'VCC'
+CONSONANTAL_I_FEATURE = 'consonantal \'i\''
 POSTINIT_FEATURE = '(post)initial'
 ANTEPEN_FEATURE = '((ante)pen)ultimate'
 QUE_FEATURE = '((ante)pen)ultimate + que'
@@ -24,27 +26,33 @@ EVEN_ODD_FEATURE = 'even/odd index'
 ALL_FEATURES = frozenset({
     VOCAB_FEATURE,
     SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
-    VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE,
+    VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE, VCC_FEATURE,
     POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
-    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE
+    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE, CONSONANTAL_I_FEATURE
 })
 RHYME_AND_TYPE_FEATURES = frozenset({
     SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
-    VOWEL_FEATURE, CODA_FEATURE,
+    VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE, VCC_FEATURE,
     POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
-    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE
+    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE, CONSONANTAL_I_FEATURE
+})
+RHYME_AND_CODA_TYPE_FEATURES = frozenset({
+    DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
+    VOWEL_FEATURE, CODA_FEATURE, RHYME_FEATURE, VCC_FEATURE,
+    POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
+    ADJ_CODA_TYPE_FEATURE, CONSONANTAL_I_FEATURE
 })
 TYPE_ONLY_FEATURES = frozenset({
     SYLLABLE_TYPE_FEATURE, DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
-    VOWEL_FEATURE, CODA_FEATURE,
+    VOWEL_FEATURE, CODA_FEATURE, VCC_FEATURE,
     POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
-    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE
+    ADJ_TYPE_FEATURE, ADJ_CODA_TYPE_FEATURE, CONSONANTAL_I_FEATURE
 })
 CODA_TYPE_ONLY_FEATURES = frozenset({
     DIPHTHONG_FEATURE, CODA_TYPE_FEATURE,
-    VOWEL_FEATURE, CODA_FEATURE,
+    VOWEL_FEATURE, CODA_FEATURE, VCC_FEATURE,
     POSTINIT_FEATURE, ANTEPEN_FEATURE, QUE_FEATURE, EVEN_ODD_FEATURE,
-    ADJ_CODA_TYPE_FEATURE
+    ADJ_CODA_TYPE_FEATURE, CONSONANTAL_I_FEATURE
 })
 
 
@@ -138,9 +146,13 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
                     feature_dict['NO_POST_CODA'] = 1.0
 
         if VOWEL_FEATURE in use_features:
-            feature_dict['VOWEL=' + vowels] = 1.0
+            if not (DIPHTHONG_FEATURE in use_features and len(vowels) > 1):
+                # No need to mark diphthongs twice,
+                # DIPHTHONG is a better feature
+                feature_dict['VOWEL=' + vowels] = 1.0
 
         if DIPHTHONG_FEATURE in use_features:
+            # All diphthongs are long
             if len(vowels) > 1:
                 feature_dict['DIPHTHONG'] = 1.0
 
@@ -154,6 +166,28 @@ def extract_features(syllables: List[str], vocabulary: Iterable[str],
             # TODO use vocabulary of rhymes or allow all?
             rhyme = vowels + coda
             feature_dict['RHYME=' + rhyme] = 1.0
+
+        if VCC_FEATURE in use_features:
+            # A vowel followed by two consonants (except muta cum liquida)
+            # is always short, even if they're split across coda/onset
+            # of this and the following syllable
+            syl_type = syllable_types[i]
+            post_syl_type = syllable_types[i + 1] if i != ult_i else ''
+            if syl_type.endswith('C*') or (syl_type.endswith('C')
+                                           and post_syl_type.startswith('CV')):
+                feature_dict['VCC'] = 1.0
+
+        if CONSONANTAL_I_FEATURE in use_features:
+            if syllable_types[i].startswith('V') \
+                    and i != 0 and syllables[i - 1] == 'i':
+                # Guess that 'i' in previous syllable might actually be
+                # consonantal i (i.e. the onset of this syllable)
+                feature_dict['PRE_I'] = 1.0
+            if 'i' not in syllables[i] \
+                    and i != ult_i and syllables[i + 1] == 'i':
+                # Guess that the 'i' in the next syllable might actually be
+                # consonantal i, making this syllable short
+                feature_dict['POST_I'] = 1.0
 
         if POSTINIT_FEATURE in use_features:
             if i == 0:
