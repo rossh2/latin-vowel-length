@@ -1,0 +1,105 @@
+Reading data from path: ./data/Latin_words_preprocessed_unique.txt
+Total number of words (train+test): 23404
+Using features: ((ante)pen)ultimate, ((ante)pen)ultimate + que, (post)initial, VCC, adjacent coda type, adjacent diphthong, adjacent vowel, coda, coda type, diphthong, even/odd index, vowel
+Extracted 84 features for 1 syllables in vocabulary
+Classifier type: DecisionTreeClassifier
+Hyperparameters: max_depth=8, min_samples_leaf=5
+K-fold cross-validation with 5 folds, evaluate on 1 of them
+Fold # 1
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.80      0.96      0.87     41850
+        long       0.85      0.50      0.63     19842
+
+    accuracy                           0.81     61692
+   macro avg       0.83      0.73      0.75     61692
+weighted avg       0.82      0.81      0.79     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.79      0.96      0.87     10347
+        long       0.85      0.49      0.62      5076
+
+    accuracy                           0.80     15423
+   macro avg       0.82      0.73      0.75     15423
+weighted avg       0.81      0.80      0.79     15423
+
+Feature importances for most recent train/test split
+Feature ranking:
+1. feature DIPHTHONG (100.000)
+2. feature CODA=s (84.233)
+3. feature NO_CODA (76.991)
+4. feature PENULT (57.892)
+5. feature VCC (48.925)
+6. feature VOWEL=u (46.372)
+7. feature ULT (43.358)
+8. feature CODA=ns (41.936)
+9. feature VOWEL=o (36.708)
+10. feature INIT (35.544)
+11. feature VOWEL=a (33.253)
+12. feature VOWEL=i (22.323)
+13. feature ULT+QUE (17.984)
+14. feature VOWEL=e (17.336)
+15. feature POSTINIT (7.588)
+16. feature NO_POST_CODA (6.433)
+17. feature CODA=n (6.212)
+18. feature CODA=nc (4.582)
+19. feature POST_VOWEL=a (3.542)
+20. feature CODA=g (3.352)
+21. feature CODA=mp (3.226)
+22. feature POST_VOWEL=i (2.404)
+23. feature POST_VOWEL=e (2.151)
+24. feature PRE_VOWEL=o (1.744)
+25. feature POST_VOWEL=u (1.740)
+26. feature POST_VOWEL=o (1.461)
+27. feature NO_PRE_CODA (0.975)
+28. feature PRE_VOWEL=i (0.903)
+29. feature PRE_VOWEL=y (0.872)
+30. feature POST_CODA_TYPE=C (0.573)
+31. feature PRE_VOWEL=e (0.549)
+32. feature PRE_CODA_TYPE=C (0.490)
+33. feature POST_CODA_TYPE=C+ (0.348)
+34. feature VOWEL=y (0.277)
+35. feature PRE_VOWEL=a (0.131)
+36. feature POST_DIPHTHONG (0.125)
+37. feature POST_VOWEL=y (0.106)
+38. feature CODA=c (0.008)
+39. feature ANTEPENULT (0.007)
+40. feature PRE_DIPHTHONG (0.005)
+41. feature EVEN (0.003)
+42. feature ODD (0.003)
+43. feature PRE_VOWEL=u (0.001)
+44. feature CODA=t (0.000)
+45. feature CODA=rx (0.000)
+46. feature CODA=st (0.000)
+47. feature CODA=rbs (0.000)
+48. feature CODA=dg (0.000)
+49. feature CODA=j (0.000)
+50. feature CODA=d (0.000)
+51. feature CODA=mst (0.000)
+52. feature CODA=rp (0.000)
+53. feature CODA=lc (0.000)
+54. feature CODA=f (0.000)
+55. feature PENULT+QUE (0.000)
+56. feature CODA=x (0.000)
+57. feature CODA=ct (0.000)
+58. feature CODA=ms (0.000)
+59. feature CODA=lp (0.000)
+60. feature CODA=rc (0.000)
+61. feature CODA=xs (0.000)
+62. feature CODA=b (0.000)
+63. feature CODA_TYPE=C+ (0.000)
+64. feature ANTEPENULT+QUE (0.000)
+65. feature CODA=nt (0.000)
+66. feature CODA=r (0.000)
+67. feature CODA=lt (0.000)
+68. feature CODA=rps (0.000)
+69. feature CODA=nx (0.000)
+70. feature CODA=ds (0.000)
+71. feature CODA=ng (0.000)
+72. feature CODA=mq (0.000)
+73. feature CODA=ps (0.000)
+74. feature CODA=bs (0.000)
+75. feature CODA=rs (0.000)

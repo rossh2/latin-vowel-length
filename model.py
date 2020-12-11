@@ -14,7 +14,7 @@ from sklearn.tree import DecisionTreeClassifier, export_graphviz
 
 from features import build_syllable_vocabulary, cap_vocabulary, \
     extract_features, is_long_syllable, VOCAB_FEATURE, \
-    UNK_VOCABULARY, CODA_TYPE_ONLY_FEATURES, ALL_FEATURES
+    UNK_VOCABULARY, ALL_FEATURES
 from preprocess import read_syllabified_words, PREPROCESSED_UNIQUE_DATA_PATH
 
 LABEL_NAMES = ['short', 'long']
@@ -196,6 +196,9 @@ def kfold_train_evaluate(classifier, data: np.ndarray,
         else:
             classifier.fit(train_data, train_labels)
 
+        if hasattr(classifier, 'n_iter_'):
+            logger.info(f'Number of iterations: {classifier.n_iter_}')
+
         logger.info('Training set performance:')
         evaluate(train_data, train_labels, classifier, train_lengths)
 
@@ -216,18 +219,20 @@ if __name__ == '__main__':
                                                         data_path)
 
     classifier = RandomForestClassifier(min_samples_split=5, n_estimators=75)
-    # classifier = DecisionTreeClassifier(min_samples_leaf=5, max_depth=8)
+    # classifier = DecisionTreeClassifier(max_depth=8, min_samples_leaf=5)
+    # classifier = Perceptron(max_iter=500)
+    # classifier = StructuredPerceptron(max_iter=25)
     logger.info(f'Classifier type: {classifier.__class__.__name__}')
-    logger.info(f'Hyperparameters: min_samples_leaf=5, n_estimators=75')
+    logger.info(f'Hyperparameters: min_samples_split=5, n_estimators=75')
 
     # 5 folds: 80-20 train/test split
     fold_count = 5
     # Only actually train and evaluate on some of them
     # (saves time when dataset sufficiently large and all folds are similar)
-    evaluate_folds = 3
+    evaluate_folds = 5
     kfold_train_evaluate(classifier, data, labels, word_lengths, features,
                          fold_count, evaluate_folds)
 
-    do_plot = True
+    do_plot = False
     if do_plot:
         plot_fitted_tree(classifier, features, log_date)

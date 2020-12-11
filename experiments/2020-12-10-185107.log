@@ -1,0 +1,190 @@
+Feature set: SYL_RHYME
+Reading data from path: ./data/Latin_words_preprocessed_unique.txt
+Total number of words (train+test): 23404
+Using features: ((ante)pen)ultimate, ((ante)pen)ultimate + que, (post)initial, VCC, coda, coda type, diphthong, even/odd index, rhyme, vowel
+Extracted 230 features for 1 syllables in vocabulary
+Classifier type: RandomForestClassifier
+Hyperparameters: min_samples_split=5, n_estimators=75
+K-fold cross-validation with 5 folds, evaluate on 5 of them
+Fold # 1
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.83      0.96      0.89     41764
+        long       0.87      0.58      0.69     19927
+
+    accuracy                           0.84     61691
+   macro avg       0.85      0.77      0.79     61691
+weighted avg       0.84      0.84      0.83     61691
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.82      0.96      0.88     10433
+        long       0.87      0.56      0.68      4991
+
+    accuracy                           0.83     15424
+   macro avg       0.84      0.76      0.78     15424
+weighted avg       0.84      0.83      0.82     15424
+
+Fold # 2
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.83      0.96      0.89     41823
+        long       0.87      0.58      0.69     19869
+
+    accuracy                           0.84     61692
+   macro avg       0.85      0.77      0.79     61692
+weighted avg       0.84      0.84      0.82     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.82      0.96      0.88     10374
+        long       0.86      0.58      0.69      5049
+
+    accuracy                           0.83     15423
+   macro avg       0.84      0.77      0.79     15423
+weighted avg       0.84      0.83      0.82     15423
+
+Fold # 3
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.83      0.95      0.89     41741
+        long       0.86      0.59      0.70     19952
+
+    accuracy                           0.83     61693
+   macro avg       0.84      0.77      0.79     61693
+weighted avg       0.84      0.83      0.83     61693
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.83      0.95      0.89     10456
+        long       0.85      0.59      0.70      4966
+
+    accuracy                           0.83     15422
+   macro avg       0.84      0.77      0.79     15422
+weighted avg       0.84      0.83      0.82     15422
+
+Fold # 4
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.82      0.96      0.89     41659
+        long       0.87      0.57      0.69     20033
+
+    accuracy                           0.83     61692
+   macro avg       0.85      0.77      0.79     61692
+weighted avg       0.84      0.83      0.82     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.83      0.96      0.89     10538
+        long       0.87      0.58      0.69      4885
+
+    accuracy                           0.84     15423
+   macro avg       0.85      0.77      0.79     15423
+weighted avg       0.84      0.84      0.83     15423
+
+Fold # 5
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.83      0.96      0.89     41801
+        long       0.86      0.58      0.70     19891
+
+    accuracy                           0.84     61692
+   macro avg       0.85      0.77      0.79     61692
+weighted avg       0.84      0.84      0.83     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.82      0.95      0.88     10396
+        long       0.86      0.57      0.69      5027
+
+    accuracy                           0.83     15423
+   macro avg       0.84      0.76      0.79     15423
+weighted avg       0.83      0.83      0.82     15423
+
+Feature importances for most recent train/test split
+Feature ranking:
+1. feature ULT (100.000)
+2. feature INIT (53.539)
+3. feature PENULT (42.804)
+4. feature DIPHTHONG (37.626)
+5. feature VCC (29.113)
+6. feature CODA_TYPE=C (26.624)
+7. feature RHYME=ae (26.351)
+8. feature CODA=s (24.480)
+9. feature ANTEPENULT (20.805)
+10. feature VOWEL=e (19.217)
+11. feature NO_CODA (19.125)
+12. feature RHYME=a (18.291)
+13. feature VOWEL=i (17.665)
+14. feature VOWEL=o (16.979)
+15. feature ULT+QUE (16.968)
+16. feature CODA=m (15.969)
+17. feature RHYME=o (15.783)
+18. feature VOWEL=a (14.797)
+19. feature POSTINIT (13.963)
+20. feature CODA=ns (12.292)
+21. feature RHYME=as (12.292)
+22. feature RHYME=es (11.916)
+23. feature RHYME=i (11.742)
+24. feature VOWEL=u (10.702)
+25. feature RHYME=os (10.688)
+26. feature CODA=t (10.673)
+27. feature RHYME=e (10.317)
+28. feature CODA=r (9.840)
+29. feature RHYME=us (7.994)
+30. feature RHYME=is (6.986)
+31. feature ODD (6.875)
+32. feature EVEN (6.394)
+33. feature RHYME=au (5.179)
+34. feature RHYME=um (4.211)
+35. feature RHYME=ens (4.006)
+36. feature CODA=nt (3.932)
+37. feature RHYME=u (3.650)
+38. feature RHYME=it (3.387)
+39. feature RHYME=ug (3.346)
+40. feature CODA=n (3.299)
+41. feature CODA_TYPE=C+ (2.897)
+42. feature RHYME=at (2.248)
+43. feature RHYME=er (2.210)
+44. feature RHYME=ans (2.097)
+45. feature RHYME=on (1.764)
+46. feature RHYME=ons (1.592)
+47. feature RHYME=am (1.586)
+48. feature RHYME=aes (1.471)
+49. feature RHYME=ant (1.460)
+50. feature CODA=g (1.435)
+51. feature CODA=nc (1.249)
+52. feature CODA=l (1.219)
+53. feature RHYME=or (1.203)
+54. feature RHYME=en (1.136)
+55. feature RHYME=em (1.125)
+56. feature CODA=c (1.109)
+57. feature RHYME=an (0.977)
+58. feature RHYME=ins (0.971)
+59. feature RHYME=eg (0.968)
+60. feature RHYME=unc (0.922)
+61. feature RHYME=ac (0.912)
+62. feature RHYME=ur (0.881)
+63. feature CODA=mp (0.838)
+64. feature CODA=x (0.796)
+65. feature RHYME=oe (0.782)
+66. feature RHYME=unt (0.747)
+67. feature VOWEL=y (0.697)
+68. feature RHYME=in (0.650)
+69. feature RHYME=ent (0.646)
+70. feature RHYME=et (0.615)
+71. feature RHYME=ump (0.560)
+72. feature RHYME=ex (0.527)
+73. feature CODA=d (0.524)
+74. feature CODA=p (0.479)
+75. feature RHYME=ir (0.474)

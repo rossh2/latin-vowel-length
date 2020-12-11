@@ -1,0 +1,191 @@
+Feature set: ALL_FEATURES
+Reading data from path: ./data/Latin_words_preprocessed_unique.txt
+Total number of words (train+test): 23404
+Using features: ((ante)pen)ultimate, ((ante)pen)ultimate + que, (post)initial, VCC, adjacent coda, adjacent coda type, adjacent diphthong, adjacent rhyme, adjacent syllable type, adjacent vowel, coda, coda type, diphthong, even/odd index, rhyme, syllable type, vowel, whole syllable (vocab)
+Full vocabulary size: 1362
+Extracted 1976 features for 1362 syllables in vocabulary
+Classifier type: Perceptron
+Hyperparameters: max_iter=500
+K-fold cross-validation with 5 folds, evaluate on 5 of them
+Fold # 1
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.77      0.92      0.84     41812
+        long       0.72      0.43      0.54     19880
+
+    accuracy                           0.76     61692
+   macro avg       0.75      0.68      0.69     61692
+weighted avg       0.76      0.76      0.74     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.77      0.92      0.84     10385
+        long       0.72      0.43      0.54      5038
+
+    accuracy                           0.76     15423
+   macro avg       0.74      0.68      0.69     15423
+weighted avg       0.75      0.76      0.74     15423
+
+Fold # 2
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.74      0.97      0.84     41723
+        long       0.80      0.29      0.42     19970
+
+    accuracy                           0.75     61693
+   macro avg       0.77      0.63      0.63     61693
+weighted avg       0.76      0.75      0.70     61693
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.74      0.97      0.84     10474
+        long       0.79      0.27      0.41      4948
+
+    accuracy                           0.74     15422
+   macro avg       0.76      0.62      0.62     15422
+weighted avg       0.75      0.74      0.70     15422
+
+Fold # 3
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.88      0.68      0.77     41737
+        long       0.55      0.80      0.65     19955
+
+    accuracy                           0.72     61692
+   macro avg       0.71      0.74      0.71     61692
+weighted avg       0.77      0.72      0.73     61692
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.88      0.68      0.77     10460
+        long       0.55      0.80      0.65      4963
+
+    accuracy                           0.72     15423
+   macro avg       0.71      0.74      0.71     15423
+weighted avg       0.77      0.72      0.73     15423
+
+Fold # 4
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.95      0.63      0.76     41814
+        long       0.54      0.93      0.68     19875
+
+    accuracy                           0.72     61689
+   macro avg       0.75      0.78      0.72     61689
+weighted avg       0.82      0.72      0.73     61689
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.95      0.63      0.76     10383
+        long       0.55      0.93      0.69      5043
+
+    accuracy                           0.73     15426
+   macro avg       0.75      0.78      0.72     15426
+weighted avg       0.82      0.73      0.74     15426
+
+Fold # 5
+Training set performance:
+              precision    recall  f1-score   support
+
+       short       0.98      0.52      0.68     41702
+        long       0.49      0.98      0.65     19992
+
+    accuracy                           0.66     61694
+   macro avg       0.73      0.75      0.66     61694
+weighted avg       0.82      0.66      0.67     61694
+
+Test set performance:
+              precision    recall  f1-score   support
+
+       short       0.97      0.51      0.66     10495
+        long       0.48      0.97      0.64      4926
+
+    accuracy                           0.65     15421
+   macro avg       0.72      0.74      0.65     15421
+weighted avg       0.81      0.65      0.66     15421
+
+Feature importances for most recent train/test split
+Feature ranking:
+1. feature nul (100.000)
+2. feature nun (100.000)
+3. feature lap (83.784)
+4. feature fir (83.784)
+5. feature tec (81.081)
+6. feature rec (78.378)
+7. feature prin (78.378)
+8. feature nup (78.378)
+9. feature CODA=ns (75.676)
+10. feature lec (70.270)
+11. feature thre (70.270)
+12. feature crip (70.270)
+13. feature dac (67.568)
+14. feature que (64.865)
+15. feature non (64.865)
+16. feature stel (64.865)
+17. feature clas (62.162)
+18. feature tran (62.162)
+19. feature pres (62.162)
+20. feature rur (62.162)
+21. feature pli (62.162)
+22. feature quin (62.162)
+23. feature DIPHTHONG (59.459)
+24. feature temp (59.459)
+25. feature fur (59.459)
+26. feature ny (56.757)
+27. feature gres (54.054)
+28. feature for (54.054)
+29. feature stu (54.054)
+30. feature PRE_RHYME=at (54.054)
+31. feature mar (51.351)
+32. feature fen (51.351)
+33. feature frac (51.351)
+34. feature spi (51.351)
+35. feature pos (51.351)
+36. feature RHYME=ug (51.351)
+37. feature CODA=g (51.351)
+38. feature POST_TYPE=VC+ (51.351)
+39. feature pug (51.351)
+40. feature tror (48.649)
+41. feature CODA=m (48.649)
+42. feature ques (48.649)
+43. feature xor (48.649)
+44. feature frus (48.649)
+45. feature nol (48.649)
+46. feature bus (48.649)
+47. feature val (48.649)
+48. feature fli (48.649)
+49. feature tur (48.649)
+50. feature lin (45.946)
+51. feature scrip (45.946)
+52. feature ul (45.946)
+53. feature spa (45.946)
+54. feature flic (45.946)
+55. feature CODA=nt (45.946)
+56. feature truc (45.946)
+57. feature vu (45.946)
+58. feature mag (43.243)
+59. feature fac (43.243)
+60. feature gre (43.243)
+61. feature cha (43.243)
+62. feature PRE_RHYME=aj (43.243)
+63. feature thu (43.243)
+64. feature spo (43.243)
+65. feature jus (43.243)
+66. feature ste (43.243)
+67. feature ras (40.541)
+68. feature flo (40.541)
+69. feature POST_RHYME=ir (40.541)
+70. feature pec (40.541)
+71. feature gen (40.541)
+72. feature mur (40.541)
+73. feature je (40.541)
+74. feature ren (40.541)
+75. feature fec (40.541)
