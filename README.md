@@ -15,3 +15,38 @@ the linguistic features judged most predictive for the task.
 
 Special thanks to Kevin Ryan for sharing his compiled dataset of Latin text
 annotated with macrons.
+
+## How to run
+
+This project uses Anaconda to manage dependencies. Clone this repository, then use
+```
+conda env create -f environment.yml
+```
+to install the dependencies. Activate your new conda environment with
+```
+conda activate latin-vowel-classifier
+```
+
+If the `/data` folder only contains `Ryan_Latin_master.txt`,  run
+```
+python preprocess.py
+```
+to create the two corpus files `Latin_words_preprocessed.txt` and `Latin_words_preprocessed_unique.txt`. 
+
+Then run `model.py` to train and evaluate a model:
+```
+python model.py
+```
+Various variables can be set in `model.py`,
+including the type of classifier, its 
+hyperparameters, which features to use, and whether or not to plot the tree 
+(only applicable for a decision tree). These are set in the main body of the script.
+Tree plotting options can be changed in the `plot_fitted_tree()` method.
+Logs will be output both to the console and to a log file under `/experiments`
+with the current timestamp.
+
+## Unit tests
+
+Unit tests for syllabification are contained in `test_syllabify.py`. 
+The file `test_syllabify_corpus.py` contains an integration test which checks
+that the entire corpus can be syllabified without errors.
